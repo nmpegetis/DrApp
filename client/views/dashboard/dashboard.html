@@ -1,0 +1,304 @@
+<template name="dashboard">
+	<div class="template-dashboard">
+		<div class="container">
+            {{#if isInRole 'admin'}}
+                <div id ="menuBar">
+                    <div class="nav-side-menu">
+                        <div class="brand">RoadApp</div>
+                        <i class="fa fa-bars fa-2x toggle-btn" data-toggle="collapse" data-target="#menu-content"></i>
+
+                        <div class="menu-list">
+
+                            <ul id="menu-content" class="menu-content collapse out">
+                                <li>
+                                    <a href="#">
+                                        <div id="history">
+                                            <i class="fa fa-history fa-lg"></i>Show History
+                                        </div>
+                                    </a>
+                                </li>
+
+                                <li>
+                                    <a href="#">
+                                        <div id="users">
+                                            <i class="fa fa-users fa-lg"></i> Show Users
+                                        </div>
+                                    </a>
+
+                                </li>
+
+                                <li>
+                                    <a href="#">
+                                        <div id="aVehicles">
+                                            <i class="fa fa-car fa-lg"></i> Available Vehicles
+                                        </div>
+                                    </a>
+                                </li>
+
+                                <li>
+                                    <a href="#">
+                                        <div id="unaVehicles">
+                                            <i class="fa fa-car fa-lg"></i> Unavailable Vehicles
+                                        </div>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <input id="pac-input" class="controls" type="text" placeholder="Search User By Name" >
+            {{/if}}
+            {{> map}}
+        </div>
+	</div>
+</template>
+
+<template name="map">
+    <div class="map-container">
+        {{> googleMap name="map" options=mapOptions}}
+    </div>
+</template>
+
+<template name="modalHistory">
+    <div class="modal fade">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title title">History </h4>
+                </div>
+
+                <div class="modal-body">
+                    <ol>
+                        {{#each shoHistory}}
+                            {{> history}}
+                        {{/each}}
+                    </ol>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</template>
+
+<template name="history">
+    <li>
+        {{history}}
+    </li>
+
+</template>
+
+<template name="modalAVehicles">
+    <div class="modal fade">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title title"><span class="ave">Available Vehicles</span></h4>
+                </div>
+
+                <div class="modal-body">
+                    <ol>
+                        {{#each aVehicles}}
+                            {{> vehicle}}
+                        {{/each}}
+                    </ol>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</template>
+
+<template name="modalunaVehicles">
+    <div class="modal fade">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title title"><span class="unave">Unavailable Vehicles</span></h4>
+                </div>
+
+                <div class="modal-body">
+                    <ol>
+                        {{#each unaVehicles}}
+                            {{> vehicle}}
+                        {{/each}}
+                    </ol>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</template>
+
+<template name="vehicle">
+    <li>
+        <span>
+            [{{formatDate date}},{{time}}]
+        </span><br>
+        <span>
+            <i>Vehicle: </i>
+            <span class="autoText">
+                {{name}}
+            </span>
+        </span>
+        <span>
+            <i>in </i>
+            <span class="autoText">
+                {{address}}
+            </span>
+        </span><br>
+    </li>
+</template>
+
+
+<template name="modalUsers">
+    <div class="modal fade">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title title"><span class="usr">Users </span></h4>
+                </div>
+
+                <div class="modal-body">
+                    <ol>
+                        {{#each users}}
+                            {{> user}}
+                        {{/each}}
+                    </ol>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</template>
+
+<template name="user">
+    <li>
+        <span>
+            [{{formatDate date}},{{time}}]<i> Requested a vehicle </i>
+        </span><br>
+        <span>
+            <i>User: </i>
+            <span class="autoText">
+                {{name}}
+            </span>
+        </span>
+        <span>
+            <i>in </i>
+             <span class="autoText">
+                {{address}}
+             </span>
+        </span>
+        <br><br>
+    </li>
+</template>
+
+<template name="addPost">
+	<div class="template-add-post">
+		<div class="panel panel-default">
+				<div class="panel-heading">
+					<h3 class="panel-title">{{_ "add_post"}}</h3>
+				</div>
+				<div class="panel-body">
+					{{#autoForm id="add" collection="Posts" type="insert"}}
+					{{> afQuickField name="title"}}
+					{{> afQuickField name="content"}}
+					{{> afQuickField name="picture"}}
+					<button type="submit" class="btn btn-primary">{{_ "add_post_btn"}}</button>
+					{{/autoForm}}
+				</div>
+		</div>
+	</div>
+</template>
+
+<template name="posts">
+	<div class="template-posts">
+		{{#each  posts}}
+		{{> post}}
+		{{else}}
+		{{> noData}}
+		{{/each}}
+	</div>
+</template>
+
+<template name="post">
+	<div class="template-post">
+		<div class="panel panel-default">
+				<div class="panel-heading">
+					<h3 class="panel-title">
+						{{title}}
+						<span class="pull-right">
+							<i class="fa fa-thumbs-up"></i> {{#with favoritesByDoc _id}}{{count}}{{/with}}
+							<i class="fa fa-comments"></i> {{commentCount _id}}
+						</span>
+					</h3>
+				</div>
+				<div class="panel-body">
+					<p class="text-center">
+						{{#with getDoc picture 'Attachments'}}
+							<img src="{{url}}" class="img-thumbnail img-rounded">
+						{{/with}}
+					</p>
+					<div class="media">
+						<a class="pull-left" href="#">
+							{{> avatar userId=owner shape="circle"}}
+						</a>
+						<div class="media-body">
+							<p>{{content}}</p>
+							{{#if $eq owner User._id}}
+							<small>
+								{{#afModal title="Update post" omitFields="createdAt,updatedAt,owner" class="text-primary" collection="Posts" operation="update" doc=_id}}
+									<i class="fa fa-pencil" buttonContent="Edit post"></i> {{_ "edit_post"}}
+								{{/afModal}}
+								{{#afModal title="Delete post" class="text-danger" collection="Posts" operation="remove" doc=_id}}
+									<i class="fa fa-times" buttonContent="Edit post"></i> {{_ "delete"}}
+								{{/afModal}}
+							</small>
+							{{/if}}
+						</div>
+					</div>
+				</div>
+				<div class="panel-footer">
+					{{> favoriteButton _id=_id}}
+					{{> commentFormToggle }}
+					{{> comments}}
+				</div>
+		</div>
+	</div>
+</template>
+
+<template name="favoritesSidebar">
+	<div class="template-favorites-sidebar">
+		{{#if myFavorites.count}}
+		<div class="panel panel-default">
+			<div class="panel-heading">
+					<h3 class="panel-title">{{_ "favorites"}}</h3>
+			</div>
+			<div class="panel-body">
+				<ul>
+				{{#each myFavorites}}
+					<li>
+						<a>{{_id}}</a>
+					</li>
+				{{/each}}
+				</ul>
+			</div>
+		</div>
+		{{/if}}
+	</div>
+</template>

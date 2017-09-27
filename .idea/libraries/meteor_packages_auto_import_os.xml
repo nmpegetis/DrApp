@@ -227,6 +227,11 @@
         <item url="file://$USER_HOME$/.meteor/packages/facebook-oauth/1.3.2/os/facebook_server.js" />
         <item url="file://$USER_HOME$/.meteor/packages/ejson/1.0.14/os/custom_models_for_tests.js" />
         <item url="file://$USER_HOME$/.meteor/packages/ejson/1.0.14/os/ejson.js" />
+        <item url="file://$USER_HOME$/.meteor/packages/es5-shim/4.6.15/os/export_globals.js" />
+        <item url="file://$USER_HOME$/.meteor/packages/es5-shim/4.6.15/os/import_globals.js" />
+        <item url="file://$USER_HOME$/.meteor/packages/es5-shim/4.6.15/os/console.js" />
+        <item url="file://$USER_HOME$/.meteor/packages/es5-shim/4.6.15/os/client.js" />
+        <item url="file://$USER_HOME$/.meteor/packages/es5-shim/4.6.15/os/server.js" />
         <item url="file://$USER_HOME$/.meteor/packages/oauth1/1.1.11/os/oauth1_binding.js" />
         <item url="file://$USER_HOME$/.meteor/packages/oauth1/1.1.11/os/oauth1_pending_request_tokens.js" />
         <item url="file://$USER_HOME$/.meteor/packages/oauth1/1.1.11/os/oauth1_server.js" />
@@ -629,6 +634,11 @@
       <root url="file://$USER_HOME$/.meteor/packages/facebook-oauth/1.3.2/os/facebook_server.js" />
       <root url="file://$USER_HOME$/.meteor/packages/ejson/1.0.14/os/custom_models_for_tests.js" />
       <root url="file://$USER_HOME$/.meteor/packages/ejson/1.0.14/os/ejson.js" />
+      <root url="file://$USER_HOME$/.meteor/packages/es5-shim/4.6.15/os/export_globals.js" />
+      <root url="file://$USER_HOME$/.meteor/packages/es5-shim/4.6.15/os/import_globals.js" />
+      <root url="file://$USER_HOME$/.meteor/packages/es5-shim/4.6.15/os/console.js" />
+      <root url="file://$USER_HOME$/.meteor/packages/es5-shim/4.6.15/os/client.js" />
+      <root url="file://$USER_HOME$/.meteor/packages/es5-shim/4.6.15/os/server.js" />
       <root url="file://$USER_HOME$/.meteor/packages/oauth1/1.1.11/os/oauth1_binding.js" />
       <root url="file://$USER_HOME$/.meteor/packages/oauth1/1.1.11/os/oauth1_pending_request_tokens.js" />
       <root url="file://$USER_HOME$/.meteor/packages/oauth1/1.1.11/os/oauth1_server.js" />

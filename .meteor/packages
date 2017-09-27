@@ -6,26 +6,26 @@
 
 meteor-base@1.1.0             # Packages every Meteor app needs to have
 #mobile-experience@1.0.4       # Packages for a great mobile UX
-mongo@1.2.0                   # The database Meteor supports right now
+mongo@1.2.2                   # The database Meteor supports right now
 #blaze-html-templates    # Compile .html files into Meteor Blaze views
 reactive-var@1.0.11            # Reactive variable for tracker
 jquery@1.11.10                  # Helpful client-side library
 tracker@1.1.3                 # Meteor's client-side reactive programming library
 
-standard-minifier-css@1.3.4   # CSS minifier run for production mode
-standard-minifier-js@2.1.1    # JS minifier run for production mode
+standard-minifier-css@1.3.5   # CSS minifier run for production mode
+standard-minifier-js@2.1.2    # JS minifier run for production mode
 es5-shim@4.6.15                # ECMAScript 5 compatibility for older browsers.
 ecmascript@0.8.2              # Enable ECMAScript2015+ syntax in app code
 
 #autopublish@1.0.7             # Publish all data to the clients (for prototyping)
 #insecure@1.0.7                # Allow all DB writes from clients (for prototyping)
 #shell-server
-dynamic-import
+dynamic-import@0.1.3
 
 coffeescript@1.2.4_2
-less@2.7.5_1
-accounts-base@1.2.11
-accounts-password@1.3.0
+less@2.7.9
+accounts-base@1.3.3
+accounts-password@1.4.0
 aldeed:autoform@5.1.2
 aldeed:collection2
 dburles:collection-helpers
@@ -47,14 +47,14 @@ yogiben:autoform-map
 multiply:iron-router-progress
 manuelschoebel:ms-seo
 spiderable@1.0.13
-accounts-facebook@1.0.10
-accounts-google@1.0.10
-accounts-twitter@1.1.11
+accounts-facebook@1.2.1
+accounts-google@1.2.0
+accounts-twitter@1.3.0
 accounts-ui@1.1.9
 jparker:gravatar
 tap:i18n
 useraccounts:bootstrap
-service-configuration@1.0.10
+service-configuration@1.0.11
 yogiben:mixpanel
 juliancwirko:s-alert
 juliancwirko:s-alert-stackslide
@@ -78,22 +78,22 @@ utilities:avatar
 #insecure@1.0.7
 dburles:google-maps
 #meteor-base@1.0.4
-mobile-experience@1.0.4
+mobile-experience@1.0.5
 #mongo@1.1.12_1
 blaze-html-templates@1.0.4
-session@1.1.6
+session@1.1.7
 #jquery@1.11.9
 #tracker@1.1.0
-logging@1.1.15_1
-reload@1.1.10
+logging@1.1.17
+reload@1.1.11
 random@1.0.10
-ejson@1.0.12
+ejson@1.0.14
 spacebars@1.0.12
-check@1.2.3
+check@1.2.5
 #ecmascript@0.5.8_1
 mdg:geolocation
 ecwyne:mathjs
-shell-server@0.2.1
+shell-server@0.2.4
 matdutour:popup-confirm
 fds:keycodes
 themeteorchef:bert

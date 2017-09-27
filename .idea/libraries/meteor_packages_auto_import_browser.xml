@@ -564,8 +564,13 @@
         <item url="file://$USER_HOME$/.meteor/packages/html-tools/1.0.11/web.browser/utils.js" />
         <item url="file://$USER_HOME$/.meteor/packages/html-tools/1.0.11/web.browser/charref.js" />
         <item url="file://$USER_HOME$/.meteor/packages/html-tools/1.0.11/web.browser/parse.js" />
+        <item url="file://$USER_HOME$/.meteor/packages/es5-shim/4.6.15/web.browser/export_globals.js" />
+        <item url="file://$USER_HOME$/.meteor/packages/es5-shim/4.6.15/web.browser/import_globals.js" />
+        <item url="file://$USER_HOME$/.meteor/packages/es5-shim/4.6.15/web.browser/console.js" />
+        <item url="file://$USER_HOME$/.meteor/packages/es5-shim/4.6.15/web.browser/client.js" />
         <item url="file://$USER_HOME$/.meteor/packages/htmljs/1.0.11/web.browser/html.js" />
         <item url="file://$USER_HOME$/.meteor/packages/alanning_roles/1.2.16/web.browser/roles_common.js" />
+        <item url="file://$USER_HOME$/.meteor/packages/es5-shim/4.6.15/web.browser/server.js" />
         <item url="file://$USER_HOME$/.meteor/packages/htmljs/1.0.11/web.browser/visitors.js" />
         <item url="file://$USER_HOME$/.meteor/packages/htmljs/1.0.11/web.browser/preamble.js" />
         <item url="file://$USER_HOME$/.meteor/packages/alanning_roles/1.2.16/web.browser/client/debug.js" />
@@ -1151,8 +1156,13 @@
       <root url="file://$USER_HOME$/.meteor/packages/html-tools/1.0.11/web.browser/utils.js" />
       <root url="file://$USER_HOME$/.meteor/packages/html-tools/1.0.11/web.browser/charref.js" />
       <root url="file://$USER_HOME$/.meteor/packages/html-tools/1.0.11/web.browser/parse.js" />
+      <root url="file://$USER_HOME$/.meteor/packages/es5-shim/4.6.15/web.browser/export_globals.js" />
+      <root url="file://$USER_HOME$/.meteor/packages/es5-shim/4.6.15/web.browser/import_globals.js" />
+      <root url="file://$USER_HOME$/.meteor/packages/es5-shim/4.6.15/web.browser/console.js" />
+      <root url="file://$USER_HOME$/.meteor/packages/es5-shim/4.6.15/web.browser/client.js" />
       <root url="file://$USER_HOME$/.meteor/packages/htmljs/1.0.11/web.browser/html.js" />
       <root url="file://$USER_HOME$/.meteor/packages/alanning_roles/1.2.16/web.browser/roles_common.js" />
+      <root url="file://$USER_HOME$/.meteor/packages/es5-shim/4.6.15/web.browser/server.js" />
       <root url="file://$USER_HOME$/.meteor/packages/htmljs/1.0.11/web.browser/visitors.js" />
       <root url="file://$USER_HOME$/.meteor/packages/htmljs/1.0.11/web.browser/preamble.js" />
       <root url="file://$USER_HOME$/.meteor/packages/alanning_roles/1.2.16/web.browser/client/debug.js" />

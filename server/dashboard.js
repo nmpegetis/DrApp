@@ -1,8 +1,8 @@
-Markers = new Meteor.Collection('markers');
-History = new Meteor.Collection('history');
+Markers = new Mongo.Collection('markers');
+History = new Mongo.Collection('history');
 
 Meteor.publish('markers',function(userEmail,usrId){
-  
+
   if (!this.userId) {
     return this.ready();    //if not included loading state forever between different logs
   }

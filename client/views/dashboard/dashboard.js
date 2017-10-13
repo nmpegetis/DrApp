@@ -8,12 +8,39 @@ Meteor.startup(function () {
     });
 });
 
+var bounds;
 
 Template.map.helpers({
     mapOptions: function () {
+        // console.log(Markers.find({_id: Meteor.user()._id}).fetch());
+        console.log(Markers.find({}).fetch());
+        var markers = Markers.find({}).fetch();
+        bounds = new google.maps.LatLngBounds();
+        for (var i = 0; i < markers.length; i++) {
+            console.log(bounds)
+            console.log(markers[i]);
+            // bounds.extend(markers[i].getPosition());
+            bounds.extend({lat:markers[i].lat, lng:markers[i].lng});
+            // bounds.extend(new google.maps.LatLng(markers[i].lat, markers[i].lng));
+        }
+
+        console.log(bounds)
+        // setTimeout( function() { map.instance.fitBounds( bounds ); }, 1 );
+//            map.instance.fitBounds(bounds)
+GoogleMaps.ready('map', function (map) {
+    if (Meteor.user().roles == 'admin') {
+        map.instance.fitBounds(bounds)
+    }
+    else {
+//        map.instance.fitBounds(bounds);
+        map.instance.setZoom(14)
+    }
+});
         if (GoogleMaps.loaded()) {
             return {
                 // todo na bazw na ginetai zoom wste na kaluptei oles tis poleis pou exei pinezes gia ton admin. Gia ton user na ginetai stin poli pou einai
+                // center: new google.maps.LatLng(markers[0].lat, markers[0].lng), //Athens
+//todo na balw edw to lat lng tis thesis
                 center: new google.maps.LatLng(38.0213, 23.7986), //Athens
                 zoom: 10
             };
@@ -440,6 +467,35 @@ Template.map.onCreated(function () {
                 infowindow0.close();
                 infowindow1.close();
             });
+
+
+
+
+            // console.log(Markers.find({_id: Meteor.user()._id}).fetch());
+            console.log(Markers.find({}).fetch());
+            var markers = Markers.find({}).fetch();
+            var bounds = new google.maps.LatLngBounds();
+            for (var i = 0; i < markers.length; i++) {
+                console.log(i);
+                console.log(markers[i]);
+                // bounds.extend(markers[i].getPosition());
+                bounds.extend(new google.maps.LatLng(markers[i].lat, markers[i].lng));
+            }
+
+
+
+
+
+
+
+
+
+
+
+
+// console.log(bounds)
+//                 setTimeout( function() { map.instance.fitBounds( bounds ); }, 1000 );
+           // map.instance.fitBounds(bounds);
 
         }
 

@@ -19,7 +19,7 @@ Template.map.helpers({
             bounds.extend({lat: markers[i].lat, lng: markers[i].lng});
         }
 
-
+/*
         GoogleMaps.ready('map', function (map) {
             //center the map to the geometric center of all markers
             map.instance.setCenter(bounds.getCenter());
@@ -37,12 +37,12 @@ Template.map.helpers({
                 }
             }
             else {
-                map.instance.setZoom(15)
             }
         });
-        if (GoogleMaps.loaded()) {
+ */
+if (GoogleMaps.loaded()) {
             return {
-                center: new google.maps.LatLng(38.0213, 23.7986), //Athens
+                center: new google.maps.LatLng(35.1856, 33.3823), //Nicosia
                 zoom: 10
             };
         }

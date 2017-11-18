@@ -1,0 +1,7 @@
+{
+  "galaxy.meteor.com": {
+    "env": {
+      "MONGO_URL": "mongodb://wotchme:wotchmepwd1717@ds113586.mlab.com:13586/wotchme"
+    }
+  }
+}

@@ -59,9 +59,6 @@
         <item url="file://$USER_HOME$/.meteor/packages/aldeed_simple-schema/1.5.3/web.cordova/simple-schema-validation.js" />
         <item url="file://$USER_HOME$/.meteor/packages/aldeed_simple-schema/1.5.3/web.cordova/simple-schema-context.js" />
         <item url="file://$USER_HOME$/.meteor/packages/aldeed_simple-schema/1.5.3/web.cordova/mongo-object.js" />
-        <item url="file://$USER_HOME$/.meteor/packages/modules-runtime/0.9.0/web.cordova/options.js" />
-        <item url="file://$USER_HOME$/.meteor/packages/modules-runtime/0.9.0/web.cordova/client.js" />
-        <item url="file://$USER_HOME$/.meteor/packages/modules-runtime/0.9.0/web.cordova/.npm/package/node_modules/install/install.js" />
         <item url="file://$USER_HOME$/.meteor/packages/google-oauth/1.2.4/web.cordova/google_sign-in.js" />
         <item url="file://$USER_HOME$/.meteor/packages/google-oauth/1.2.4/web.cordova/google_server.js" />
         <item url="file://$USER_HOME$/.meteor/packages/google-oauth/1.2.4/web.cordova/namespace.js" />
@@ -85,10 +82,13 @@
         <item url="file://$USER_HOME$/.meteor/packages/momentjs_moment/2.19.2/web.cordova/moment.js" />
         <item url="file://$USER_HOME$/.meteor/packages/iron_layout/1.0.12/web.cordova/layout.js" />
         <item url="file://$USER_HOME$/.meteor/packages/allow-deny/1.1.0/web.cordova/allow-deny-tests.js" />
+        <item url="file://$USER_HOME$/.meteor/packages/modules-runtime/0.9.1/web.cordova/options.js" />
         <item url="file://$USER_HOME$/.meteor/packages/iron_location/1.0.11/web.cordova/lib/state.js" />
         <item url="file://$USER_HOME$/.meteor/packages/mongo-dev-server/1.1.0/web.cordova/server.js" />
         <item url="file://$USER_HOME$/.meteor/packages/iron_location/1.0.11/web.cordova/lib/utils.js" />
+        <item url="file://$USER_HOME$/.meteor/packages/modules-runtime/0.9.1/web.cordova/client.js" />
         <item url="file://$USER_HOME$/.meteor/packages/iron_location/1.0.11/web.cordova/lib/location.js" />
+        <item url="file://$USER_HOME$/.meteor/packages/modules-runtime/0.9.1/web.cordova/.npm/package/node_modules/install/install.js" />
         <item url="file://$USER_HOME$/.meteor/packages/iron_middleware-stack/1.1.0/web.cordova/lib/middleware_stack.js" />
         <item url="file://$USER_HOME$/.meteor/packages/iron_middleware-stack/1.1.0/web.cordova/lib/handler.js" />
         <item url="file://$USER_HOME$/.meteor/packages/accounts-ui-unstyled/1.3.0/web.cordova/login_buttons_single.js" />
@@ -671,9 +671,6 @@
       <root url="file://$USER_HOME$/.meteor/packages/aldeed_simple-schema/1.5.3/web.cordova/simple-schema-validation.js" />
       <root url="file://$USER_HOME$/.meteor/packages/aldeed_simple-schema/1.5.3/web.cordova/simple-schema-context.js" />
       <root url="file://$USER_HOME$/.meteor/packages/aldeed_simple-schema/1.5.3/web.cordova/mongo-object.js" />
-      <root url="file://$USER_HOME$/.meteor/packages/modules-runtime/0.9.0/web.cordova/options.js" />
-      <root url="file://$USER_HOME$/.meteor/packages/modules-runtime/0.9.0/web.cordova/client.js" />
-      <root url="file://$USER_HOME$/.meteor/packages/modules-runtime/0.9.0/web.cordova/.npm/package/node_modules/install/install.js" />
       <root url="file://$USER_HOME$/.meteor/packages/google-oauth/1.2.4/web.cordova/google_sign-in.js" />
       <root url="file://$USER_HOME$/.meteor/packages/google-oauth/1.2.4/web.cordova/google_server.js" />
       <root url="file://$USER_HOME$/.meteor/packages/google-oauth/1.2.4/web.cordova/namespace.js" />
@@ -697,10 +694,13 @@
       <root url="file://$USER_HOME$/.meteor/packages/momentjs_moment/2.19.2/web.cordova/moment.js" />
       <root url="file://$USER_HOME$/.meteor/packages/iron_layout/1.0.12/web.cordova/layout.js" />
       <root url="file://$USER_HOME$/.meteor/packages/allow-deny/1.1.0/web.cordova/allow-deny-tests.js" />
+      <root url="file://$USER_HOME$/.meteor/packages/modules-runtime/0.9.1/web.cordova/options.js" />
       <root url="file://$USER_HOME$/.meteor/packages/iron_location/1.0.11/web.cordova/lib/state.js" />
       <root url="file://$USER_HOME$/.meteor/packages/mongo-dev-server/1.1.0/web.cordova/server.js" />
       <root url="file://$USER_HOME$/.meteor/packages/iron_location/1.0.11/web.cordova/lib/utils.js" />
+      <root url="file://$USER_HOME$/.meteor/packages/modules-runtime/0.9.1/web.cordova/client.js" />
       <root url="file://$USER_HOME$/.meteor/packages/iron_location/1.0.11/web.cordova/lib/location.js" />
+      <root url="file://$USER_HOME$/.meteor/packages/modules-runtime/0.9.1/web.cordova/.npm/package/node_modules/install/install.js" />
       <root url="file://$USER_HOME$/.meteor/packages/iron_middleware-stack/1.1.0/web.cordova/lib/middleware_stack.js" />
       <root url="file://$USER_HOME$/.meteor/packages/iron_middleware-stack/1.1.0/web.cordova/lib/handler.js" />
       <root url="file://$USER_HOME$/.meteor/packages/accounts-ui-unstyled/1.3.0/web.cordova/login_buttons_single.js" />

@@ -327,9 +327,9 @@ Template.map.onCreated(function () {
                 for (var i = 0; i < countVeh; i++) {
                     var mar = markers[vehicles[i]._id];
                     if (vehicles[i].sent == "1")
-                        mar.setIcon('http://maps.google.com/mapfiles/ms/icons/red-dot.png');
+                        mar.setIcon('https://maps.google.com/mapfiles/ms/icons/red-dot.png');
                     else
-                        mar.setIcon('http://maps.google.com/mapfiles/ms/icons/green-dot.png');
+                        mar.setIcon('https://maps.google.com/mapfiles/ms/icons/green-dot.png');
                 }
             });
             self.autorun(function () {
@@ -532,7 +532,7 @@ Template.map.onCreated(function () {
                                 marker = new google.maps.Marker({
                                     position: new google.maps.LatLng(latLng.lat, latLng.lng),
                                     map: map.instance,
-                                    icon: 'http://maps.google.com/mapfiles/ms/icons/blue-dot.png',
+                                    icon: 'https://maps.google.com/mapfiles/ms/icons/blue-dot.png',
                                     id: document._id,
                                     title: 'Me'
                                 });
@@ -586,7 +586,7 @@ Template.map.onCreated(function () {
                     var marker = new google.maps.Marker({
                         position: new google.maps.LatLng(37.929768, 23.747442),
                         map: map.instance,
-                        icon: 'http://maps.google.com/mapfiles/ms/icons/blue-dot.png',
+                        icon: 'https://maps.google.com/mapfiles/ms/icons/blue-dot.png',
                         id: document._id,
                         title: 'Me'
                     });
@@ -812,9 +812,9 @@ Template.map.onCreated(function () {
                         var mar = markers[markerVeh[0]._id];
                         console.log(mar);
                         if (markerVeh[0].sent == "1")
-                            mar.setIcon('http://maps.google.com/mapfiles/ms/icons/red-dot.png');
+                            mar.setIcon('https://maps.google.com/mapfiles/ms/icons/red-dot.png');
                         else
-                            mar.setIcon('http://maps.google.com/mapfiles/ms/icons/green-dot.png');
+                            mar.setIcon('https://maps.google.com/mapfiles/ms/icons/green-dot.png');
                         if (markerVeh[0].sent == "-1" || markerVeh[0].sent == "1") {
                             map.instance.controls[7].pop(startButtonControlDiv);
                             map.instance.controls[7].push(finishButtonControlDiv);
@@ -842,7 +842,7 @@ Template.map.onCreated(function () {
                     animation: google.maps.Animation.DROP,
                     position: new google.maps.LatLng(doc.lat, doc.lng),
                     map: map.instance,
-                    icon: 'http://maps.google.com/mapfiles/ms/icons/blue-dot.png',
+                    icon: 'https://maps.google.com/mapfiles/ms/icons/blue-dot.png',
                     id: doc._id
                 });
                 google.maps.event.addListener(marker, 'mouseover', function () {
@@ -952,7 +952,7 @@ Template.map.onCreated(function () {
                     animation: google.maps.Animation.DROP,
                     position: new google.maps.LatLng(doc.lat, doc.lng),
                     map: map.instance,
-                    icon: 'http://maps.google.com/mapfiles/ms/icons/green-dot.png',
+                    icon: 'https://maps.google.com/mapfiles/ms/icons/green-dot.png',
                     id: doc._id
                 });
                 //markers[doc._id].remove;
@@ -1075,7 +1075,7 @@ Template.map.onCreated(function () {
                         animation: google.maps.Animation.DROP,
                         position: new google.maps.LatLng(doc.lat, doc.lng),
                         map: map.instance,
-                        icon: 'http://maps.google.com/mapfiles/ms/icons/green-dot.png',
+                        icon: 'https://maps.google.com/mapfiles/ms/icons/green-dot.png',
                         id: doc._id
                     });
                 }
@@ -1085,7 +1085,7 @@ Template.map.onCreated(function () {
                         animation: google.maps.Animation.DROP,
                         position: new google.maps.LatLng(doc.lat, doc.lng),
                         map: map.instance,
-                        icon: 'http://maps.google.com/mapfiles/ms/icons/green-dot.png',
+                        icon: 'https://maps.google.com/mapfiles/ms/icons/green-dot.png',
                         id: doc._id
                     });
                 }

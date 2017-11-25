@@ -4,7 +4,7 @@
 @Config =
 
 	# Basic Details
-	name: 'RoadApp'
+	name: 'DrApp'
 	title: ->
 			TAPi18n.__ 'configTitle'
 	subtitle: ->

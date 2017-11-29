@@ -523,111 +523,86 @@ Template.map.onCreated(function () {
 
                 self.autorun(function (document) {
                     Meteor.subscribe('markers', Meteor.user().emails[0].address, Meteor.user()._id); //each user has dif friends
-                    // if (Meteor.user().emails[0].address === 'user1@gmail.com') {
-                        latLng = Geolocation.latLng();
-                        var resultFormattedAddress;
-                        geocoder.geocode({'location': latLng}, function (results, status) {
-                            if (status === 'OK') {
-                                if (results[0]) {
-                                    resultFormattedAddress = results[0].formatted_address;
-                                } else {
-                                    window.alert('No results found');
-                                }
+                    latLng = Geolocation.latLng();
+                    var resultFormattedAddress;
+                    geocoder.geocode({'location': latLng}, function (results, status) {
+                        if (status === 'OK') {
+                            if (results[0]) {
+                                resultFormattedAddress = results[0].formatted_address;
                             } else {
-                                // window.alert('Geocoder failed due to: ' + status);
+                                window.alert('No results found');
                             }
-                            if (!latLng)
-                                return;
-                            // If the marker doesn't yet exist, create it.
-                            if (!marker) {
-                                marker = new google.maps.Marker({
-                                    position: new google.maps.LatLng(latLng.lat, latLng.lng),
-                                    map: map.instance,
-                                    icon: 'https://maps.google.com/mapfiles/ms/icons/blue-dot.png',
-                                    id: document._id,
-                                    title: 'Me'
-                                });
-                                Markers.update(
-                                    {_id: Meteor.user()._id},
-                                    {
-                                        $set: {
-                                            lat: latLng.lat,
-                                            lng: latLng.lng,
-                                            name: Meteor.user().emails[0].address,
-                                            surname: "-",
-                                            address: resultFormattedAddress
-                                        }
-                                    },
-                                    {upsert: true}
-                                );
-                            }
-                            // The marker already exists, so we'll just change its position.
-                            else {
-                                marker.setPosition(latLng);
-                                Markers.update(
-                                    {_id: Meteor.user()._id},
-                                    {
-                                        $set: {
-                                            lat: latLng.lat,
-                                            lng: latLng.lng,
-                                            name: Meteor.user().emails[0].address,
-                                            surname: "-",
-                                            address: resultFormattedAddress
-                                        }
-                                    },
-                                    {upsert: true});
-                            }
+                        } else {
+                            // window.alert('Geocoder failed due to: ' + status);
+                        }
+                        if (!latLng)
+                            return;
+                        // If the marker doesn't yet exist, create it.
+                        if (!marker) {
+                            marker = new google.maps.Marker({
+                                position: new google.maps.LatLng(latLng.lat, latLng.lng),
+                                map: map.instance,
+                                icon: 'https://maps.google.com/mapfiles/ms/icons/blue-dot.png',
+                                id: document._id,
+                                title: 'Me'
+                            });
+                            Markers.update(
+                                {_id: Meteor.user()._id},
+                                {
+                                    $set: {
+                                        lat: latLng.lat,
+                                        lng: latLng.lng,
+                                        name: Meteor.user().emails[0].address,
+                                        surname: "-",
+                                        address: resultFormattedAddress
+                                    }
+                                },
+                                {upsert: true}
+                            );
+                        }
+                        // The marker already exists, so we'll just change its position.
+                        else {
+                            marker.setPosition(latLng);
+                            Markers.update(
+                                {_id: Meteor.user()._id},
+                                {
+                                    $set: {
+                                        lat: latLng.lat,
+                                        lng: latLng.lng,
+                                        name: Meteor.user().emails[0].address,
+                                        surname: "-",
+                                        address: resultFormattedAddress
+                                    }
+                                },
+                                {upsert: true});
+                        }
 
-                            // center according to user position and doctor that is heling him
-                            var markers = Markers.find({}).fetch();
-                            if(markers.length === 1){
-                                 map.instance.setCenter({lat:latLng.lat, lng:latLng.lng});
-                                 map.instance.setZoom(13);
+                        // center according to user position and doctor that is heling him
+                        var markers = Markers.find({}).fetch();
+                        if(markers.length === 1){
+                             map.instance.setCenter({lat:latLng.lat, lng:latLng.lng});
+                             map.instance.setZoom(13);
+                        }
+                        else {
+                            var bounds = new google.maps.LatLngBounds();
+                            for (var i = 0; i < markers.length; i++) {
+                                bounds.extend({lat: markers[i].lat, lng: markers[i].lng});
                             }
-                            else {
-                                var bounds = new google.maps.LatLngBounds();
-                                for (var i = 0; i < markers.length; i++) {
-                                    bounds.extend({lat: markers[i].lat, lng: markers[i].lng});
-                                }
-                                //center the map to the geometric center of all markers
-                                map.instance.setCenter(bounds.getCenter());
-                                map.instance.fitBounds(bounds);
+                            //center the map to the geometric center of all markers
+                            map.instance.setCenter(bounds.getCenter());
+                            map.instance.fitBounds(bounds);
 
-                                // set a maximum zoom
-                                if (map.instance.getZoom() > 13) {
-                                    map.instance.setZoom(13);
-                                }
-                                else{
-                                    //remove one zoom level to ensure no marker is on the edge.
-                                    map.instance.setZoom(map.instance.getZoom() - 1);
-                                }
+                            // set a maximum zoom
+                            if (map.instance.getZoom() > 13) {
+                                map.instance.setZoom(13);
                             }
-                        });
-                    // }
+                            else{
+                                //remove one zoom level to ensure no marker is on the edge.
+                                map.instance.setZoom(map.instance.getZoom() - 1);
+                            }
+                        }
+                    });
                 });
-// TODO fixed user position - used with the above commented lines
-                // if (Meteor.user().emails[0].address !== 'user1@gmail.com') {
-                //     Markers.update(
-                //         {_id: Meteor.user()._id},
-                //         {
-                //             $set: {
-                //                 lat: 37.976817,
-                //                 lng: 23.709823,
-                //                 name: Meteor.user().emails[0].address,
-                //                 surname: "-",
-                //                 address: "Dekelewn 38,Athens 166 78,Greece"
-                //             }
-                //         },
-                //         {upsert: true}
-                //     );
-                //     var marker = new google.maps.Marker({
-                //         position: new google.maps.LatLng(37.929768, 23.747442),
-                //         map: map.instance,
-                //         icon: 'https://maps.google.com/mapfiles/ms/icons/blue-dot.png',
-                //         id: document._id,
-                //         title: 'Me'
-                //     });
-                // }
 
                 requestControlDiv.addEventListener('click', function () {    //Request for doctor --> Cancel request
                     new Confirmation({

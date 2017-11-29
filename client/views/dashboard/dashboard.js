@@ -493,7 +493,7 @@ Template.map.onCreated(function () {
             if (map.instance.getZoom() > 13) {
                 map.instance.setZoom(13);
             }
-            else{
+            else {
                 //remove one zoom level to ensure no marker is on the edge.
                 map.instance.setZoom(map.instance.getZoom() - 1);
             }
@@ -579,9 +579,9 @@ Template.map.onCreated(function () {
 
                         // center according to user position and doctor that is heling him
                         var markers = Markers.find({}).fetch();
-                        if(markers.length === 1){
-                             map.instance.setCenter({lat:latLng.lat, lng:latLng.lng});
-                             map.instance.setZoom(13);
+                        if (markers.length === 1) {
+                            map.instance.setCenter({lat: latLng.lat, lng: latLng.lng});
+                            map.instance.setZoom(13);
                         }
                         else {
                             var bounds = new google.maps.LatLngBounds();
@@ -596,7 +596,7 @@ Template.map.onCreated(function () {
                             if (map.instance.getZoom() > 13) {
                                 map.instance.setZoom(13);
                             }
-                            else{
+                            else {
                                 //remove one zoom level to ensure no marker is on the edge.
                                 map.instance.setZoom(map.instance.getZoom() - 1);
                             }
@@ -946,6 +946,9 @@ Template.map.onCreated(function () {
                 markers[doc._id] = marker;
 
             },
+            changed: function (newDocument, oldDocument) {
+                markers[newDocument._id].setPosition({lat: newDocument.lat, lng: newDocument.lng});
+            },
             removed: function (oldDocument) {
                 // Remove the marker from the map
                 markers[oldDocument._id].setMap(null);
@@ -1232,50 +1235,55 @@ Template.map.onCreated(function () {
                 delete markers[oldDocument._id];
             }
         });
-        /*
-    Markers.find().observe({  //friends  {request:{ $exists: false },sent:{ $exists: false},_id: { $ne: Meteor.user()._id }}
-      added: function (document) {
-        var marker = new google.maps.Marker({
-          draggable: false,
-          animation: google.maps.Animation.DROP,
-          position: new google.maps.LatLng(document.lat, document.lng),
-          map: map.instance,
-          id: document._id
-        });
-        google.maps.event.addListener(marker, 'click', function (event) {
-          var resultFormattedAddress;
-          var markerInfo = Markers.find({_id: marker.id}).fetch();
-          var latlng = {lat: markerInfo[0].lat, lng: markerInfo[0].lng};
-          geocoder.geocode({'location': latlng}, function (results, status) {
-            if (status === 'OK') {
-              if (results[0]) {
-                resultFormattedAddress = results[0].formatted_address;
-              } else {
-                window.alert('No results found');
-              }
-            } else {
-              window.alert('Geocoder failed due to: ' + status);
-            }
-            contentString = '<div id="content" style="width:150px; height:100px;">' +
-                'Name:' + markerInfo[0].name + '<br>' + 'Surname:' + markerInfo[0].surname + '<br>' + 'Address:' + resultFormattedAddress +
-                '</div>';
-            infowindow.setContent(contentString);
-            infowindow.close();
-            infowindow.open(map.instance, marker);
-          });
-        });
-        markers[document._id] = marker;
-      },
-      removed: function (oldDocument) {
-        // Remove the marker from the map
-        markers[oldDocument._id].setMap(null);
 
-        // Clear the event listener
-        google.maps.event.clearInstanceListeners(markers[oldDocument._id]);
-
-        // Remove the reference to this marker instance
-        delete markers[oldDocument._id];
-      }
-    });*/
+        // Markers.find().observe({  //friends  {request:{ $exists: false },sent:{ $exists: false},_id: { $ne: Meteor.user()._id }}
+        //     added: function (document) {
+        //         var marker = new google.maps.Marker({
+        //             draggable: false,
+        //             animation: google.maps.Animation.DROP,
+        //             position: new google.maps.LatLng(document.lat, document.lng),
+        //             map: map.instance,
+        //             id: document._id
+        //         });
+        //
+        //         console.log ("edw")
+        //         google.maps.event.addListener(marker, 'click', function (event) {
+        //             console.log ("edw1")
+        //             var resultFormattedAddress;
+        //             var markerInfo = Markers.find({_id: marker.id}).fetch();
+        //             var latlng = {lat: markerInfo[0].lat, lng: markerInfo[0].lng};
+        //             console.log ("edw2")
+        //             geocoder.geocode({'location': latlng}, function (results, status) {
+        //                 if (status === 'OK') {
+        //                     if (results[0]) {
+        //                         resultFormattedAddress = results[0].formatted_address;
+        //                     } else {
+        //                         window.alert('No results found');
+        //                     }
+        //                 } else {
+        //                     window.alert('Geocoder failed due to: ' + status);
+        //                 }
+        //                 console.log ("edw3")
+        //                 contentString = '<div id="content" style="width:150px; height:100px;">' +
+        //                     'Name:' + markerInfo[0].name + '<br>' + 'Surname:' + markerInfo[0].surname + '<br>' + 'Address:' + resultFormattedAddress +
+        //                     '</div>';
+        //                 infowindow.setContent(contentString);
+        //                 infowindow.close();
+        //                 infowindow.open(map.instance, marker);
+        //             });
+        //         });
+        //         markers[document._id] = marker;
+        //     },
+        //     removed: function (oldDocument) {
+        //         // Remove the marker from the map
+        //         markers[oldDocument._id].setMap(null);
+        //
+        //         // Clear the event listener
+        //         google.maps.event.clearInstanceListeners(markers[oldDocument._id]);
+        //
+        //         // Remove the reference to this marker instance
+        //         delete markers[oldDocument._id];
+        //     }
+        // });
     });
 });

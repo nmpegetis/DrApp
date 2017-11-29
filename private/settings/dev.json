@@ -12,8 +12,8 @@
     },
     "serviceConfigurations": {
         "facebook": {
-            "appId": "b5bd8744275104d",
-            "secret": "7fca074e2399419013545919090850ce"
+            "appId": "130956917582054",
+            "secret": "6c9f2cb6ea4d5469ad9253c06d8d5ef1"
         },
         "google": {
           "clientId" : "xxxxxxxxxxxxxxxxxxxxxxxxxxx.apps.googleusercontent.com",

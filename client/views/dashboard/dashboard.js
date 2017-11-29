@@ -12,35 +12,7 @@ var bounds;
 
 Template.map.helpers({
     mapOptions: function () {
-        var markers = Markers.find({}).fetch();
-        bounds = new google.maps.LatLngBounds();
-        for (var i = 0; i < markers.length; i++) {
-            // console.log(markers[i]);
-            bounds.extend({lat: markers[i].lat, lng: markers[i].lng});
-        }
-
-/*
-        GoogleMaps.ready('map', function (map) {
-            //center the map to the geometric center of all markers
-            map.instance.setCenter(bounds.getCenter());
-
-            map.instance.fitBounds(bounds)
-
-            if (Meteor.user().roles == 'admin') {
-                //remove one zoom level to ensure no marker is on the edge.
-                map.instance.setZoom(map.instance.getZoom()-1);
-
-                // set a minimum zoom
-                // if you got only 1 marker or all markers are on the same address map will be zoomed too much.
-                if(map.instance.getZoom()> 14){
-                    map.instance.setZoom(14);
-                }
-            }
-            else {
-            }
-        });
- */
-if (GoogleMaps.loaded()) {
+        if (GoogleMaps.loaded()) {
             return {
                 center: new google.maps.LatLng(35.1856, 33.3823), //Nicosia
                 zoom: 10
@@ -236,7 +208,36 @@ Template.map.onCreated(function () {
     var infowindow = new google.maps.InfoWindow;
     var infowindow0 = new google.maps.InfoWindow;
     var infowindow1 = new google.maps.InfoWindow;
+    /*
+                GoogleMaps.ready('map', function (map) {
+                    var markers = Markers.find({}).fetch();
+                    bounds = new google.maps.LatLngBounds();
+                    for (var i = 0; i < markers.length; i++) {
+                        console.log(markers[i]);
+                        bounds.extend({lat: markers[i].lat, lng: markers[i].lng});
+                    }
+
+                    //center the map to the geometric center of all markers
+                    map.instance.setCenter(bounds.getCenter());
+
+                    map.instance.fitBounds(bounds)
+
+                    if (Meteor.user().roles == 'admin') {
+                        //remove one zoom level to ensure no marker is on the edge.
+                        map.instance.setZoom(map.instance.getZoom() - 1);
+
+                        // set a minimum zoom
+                        // if you got only 1 marker or all markers are on the same address map will be zoomed too much.
+                        if (map.instance.getZoom() > 13) {
+                            map.instance.setZoom(13);
+                        }
+                    }
+                    else {
+                    }
+                });
+     */
     GoogleMaps.ready('map', function (map) {
+
         if (Meteor.user().roles == 'admin') {
             var markerReq;
             var addButtonControlDiv = document.createElement('div');    //add a doctor
@@ -464,7 +465,6 @@ Template.map.onCreated(function () {
                 });
             });
             google.maps.event.addListener(map.instance, 'click', function () {
-                console.log("asds")
                 infowindow0.close();
                 infowindow1.close();
             });
@@ -479,20 +479,32 @@ Template.map.onCreated(function () {
                 console.log(markers[i]);
                 // bounds.extend(markers[i].getPosition());
                 bounds.extend(new google.maps.LatLng(markers[i].lat, markers[i].lng));
+                // bounds.extend({lat: markers[i].lat, lng: markers[i].lng});
             }
 
+//new
+            //center the map to the geometric center of all markers
+            map.instance.setCenter(bounds.getCenter());
+            map.instance.fitBounds(bounds);
 
-// console.log(bounds)
-//                 setTimeout( function() { map.instance.fitBounds( bounds ); }, 1000 );
-            // map.instance.fitBounds(bounds);
 
+            // set a minimum zoom
+            // if you got only 1 marker or all markers are on the same address map will be zoomed too much.
+            if (map.instance.getZoom() > 13) {
+                map.instance.setZoom(13);
+            }
+            else{
+                //remove one zoom level to ensure no marker is on the edge.
+                map.instance.setZoom(map.instance.getZoom() - 1);
+            }
         }
-
+//todo here starts user and doctor
         if (!!Meteor.user().roles === false) { //if not an admin
             self.autorun(function () {
                 Meteor.subscribe('history');
             });
             var meteorUser = s.chop(Meteor.user().emails[0].address, 7);
+
             if (meteorUser[0] !== 'doctor') {      //simple user
                 var marker; //marker for geolocation
                 var requestControlDiv = document.createElement('div');    //request for a doctor
@@ -509,10 +521,9 @@ Template.map.onCreated(function () {
 
                 map.instance.controls[7].push(requestControlDiv);
 
-                var latLng;
                 self.autorun(function (document) {
                     Meteor.subscribe('markers', Meteor.user().emails[0].address, Meteor.user()._id); //each user has dif friends
-                    if (Meteor.user().emails[0].address === 'user1@gmail.com') {
+                    // if (Meteor.user().emails[0].address === 'user1@gmail.com') {
                         latLng = Geolocation.latLng();
                         var resultFormattedAddress;
                         geocoder.geocode({'location': latLng}, function (results, status) {
@@ -566,31 +577,57 @@ Template.map.onCreated(function () {
                                     },
                                     {upsert: true});
                             }
-                        });
-                    }
-                });
-                if (Meteor.user().emails[0].address !== 'user1@gmail.com') {
-                    Markers.update(
-                        {_id: Meteor.user()._id},
-                        {
-                            $set: {
-                                lat: 37.976817,
-                                lng: 23.709823,
-                                name: Meteor.user().emails[0].address,
-                                surname: "-",
-                                address: "Dekelewn 38,Athens 166 78,Greece"
+
+                            // center according to user position and doctor that is heling him
+                            var markers = Markers.find({}).fetch();
+                            if(markers.length === 1){
+                                 map.instance.setCenter({lat:latLng.lat, lng:latLng.lng});
+                                 map.instance.setZoom(13);
                             }
-                        },
-                        {upsert: true}
-                    );
-                    var marker = new google.maps.Marker({
-                        position: new google.maps.LatLng(37.929768, 23.747442),
-                        map: map.instance,
-                        icon: 'https://maps.google.com/mapfiles/ms/icons/blue-dot.png',
-                        id: document._id,
-                        title: 'Me'
-                    });
-                }
+                            else {
+                                var bounds = new google.maps.LatLngBounds();
+                                for (var i = 0; i < markers.length; i++) {
+                                    bounds.extend({lat: markers[i].lat, lng: markers[i].lng});
+                                }
+                                //center the map to the geometric center of all markers
+                                map.instance.setCenter(bounds.getCenter());
+                                map.instance.fitBounds(bounds);
+
+                                // set a maximum zoom
+                                if (map.instance.getZoom() > 13) {
+                                    map.instance.setZoom(13);
+                                }
+                                else{
+                                    //remove one zoom level to ensure no marker is on the edge.
+                                    map.instance.setZoom(map.instance.getZoom() - 1);
+                                }
+                            }
+                        });
+                    // }
+                });
+// TODO fixed user position - used with the above commented lines
+                // if (Meteor.user().emails[0].address !== 'user1@gmail.com') {
+                //     Markers.update(
+                //         {_id: Meteor.user()._id},
+                //         {
+                //             $set: {
+                //                 lat: 37.976817,
+                //                 lng: 23.709823,
+                //                 name: Meteor.user().emails[0].address,
+                //                 surname: "-",
+                //                 address: "Dekelewn 38,Athens 166 78,Greece"
+                //             }
+                //         },
+                //         {upsert: true}
+                //     );
+                //     var marker = new google.maps.Marker({
+                //         position: new google.maps.LatLng(37.929768, 23.747442),
+                //         map: map.instance,
+                //         icon: 'https://maps.google.com/mapfiles/ms/icons/blue-dot.png',
+                //         id: document._id,
+                //         title: 'Me'
+                //     });
+                // }
 
                 requestControlDiv.addEventListener('click', function () {    //Request for doctor --> Cancel request
                     new Confirmation({

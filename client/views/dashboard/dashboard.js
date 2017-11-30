@@ -325,6 +325,9 @@ Template.map.onCreated(function () {
                 var doctors = Markers.find({
                     surname: "Help"
                 }).fetch();
+                console.log("markers are")
+                console.log(markers)
+
                 for (var i = 0; i < countVeh; i++) {
                     var mar = markers[doctors[i]._id];
                     if (doctors[i].sent == "1")
@@ -503,7 +506,7 @@ Template.map.onCreated(function () {
             self.autorun(function () {
                 Meteor.subscribe('history');
             });
-            var meteorUser = s.chop(Meteor.user().emails[0].address, 7);
+            var meteorUser = s.chop(Meteor.user().emails[0].address, 6);
 
             if (meteorUser[0] !== 'doctor') {      //simple user
                 var marker; //marker for geolocation
@@ -818,31 +821,115 @@ Template.map.onCreated(function () {
                 });
                 self.autorun(function (document) {
                     Meteor.subscribe('markers', Meteor.user().emails[0].address, Meteor.user()._id);
-                    var markerCount = Markers.find({_id: Meteor.user()._id}).count();
-                    if (markerCount != 0) {
-                        markerVeh = Markers.find({_id: Meteor.user()._id}).fetch();
-                        var mar = markers[markerVeh[0]._id];
-                        console.log(mar);
-                        if (markerVeh[0].sent == "1")
-                            mar.setIcon('https://maps.google.com/mapfiles/ms/icons/red-dot.png');
-                        else
-                            mar.setIcon('https://maps.google.com/mapfiles/ms/icons/green-dot.png');
-                        if (markerVeh[0].sent == "-1" || markerVeh[0].sent == "1") {
-                            map.instance.controls[7].pop(startButtonControlDiv);
-                            map.instance.controls[7].push(finishButtonControlDiv);
+                    var latLng = Geolocation.latLng();
+                    var resultFormattedAddress;
+                    geocoder.geocode({'location': latLng}, function (results, status) {
+                        if (status === 'OK') {
+                            if (results[0]) {
+                                resultFormattedAddress = results[0].formatted_address;
+                            } else {
+                                window.alert('No results found');
+                            }
+                        } else {
+                            // window.alert('Geocoder failed due to: ' + status);
+                        }
+                        if (!latLng)
+                            return;
+                        // If the marker doesn't yet exist, create it.
+                        if (!marker) {
+                            marker = new google.maps.Marker({
+                                // position: new google.maps.LatLng(latLng.lat, latLng.lng),
+                                // lat: latLng.lat,
+                                // lng: latLng.lng,
+                                // address: resultFormattedAddress,
+                                // map: map.instance,
+                                // icon: 'https://maps.google.com/mapfiles/ms/icons/green-dot.png',
+                                // id: Meteor.user()._id,
+                                name: Meteor.user().emails[0].address,
+                                surname: "Help",
+                                friend: "-",
+                                title: 'Me',
+                                sent: "0"
+                            });
+                            if (marker.sent == "1"){
+                                Markers.update(
+                                    {_id: Meteor.user()._id},
+                                    {
+                                        $set: {
+                                            lat: latLng.lat,
+                                            lng: latLng.lng,
+                                            name: Meteor.user().emails[0].address,
+                                            surname: "Help",
+                                            address: resultFormattedAddress,
+                                            icon: 'https://maps.google.com/mapfiles/ms/icons/red-dot.png'
+                                        }
+                                    },
+                                    {upsert: true}
+                                );
+                            }
+                            else {
+                                Markers.update(
+                                    {_id: Meteor.user()._id},
+                                    {
+                                        $set: {
+                                            lat: latLng.lat,
+                                            lng: latLng.lng,
+                                            name: Meteor.user().emails[0].address,
+                                            surname: "Help",
+                                            address: resultFormattedAddress,
+                                            icon: 'https://maps.google.com/mapfiles/ms/icons/green-dot.png'
+                                        }
+                                    },
+                                    {upsert: true}
+                                );
+                            }
+                            if (marker.sent == "-1" || marker.sent == "1") {
+                                map.instance.controls[7].pop(startButtonControlDiv);
+                                map.instance.controls[7].push(finishButtonControlDiv);
+                            }
+                        }
+                        // The marker already exists, so we'll just change its position.
+                        else {
+                            marker.setPosition(latLng);
+                            Markers.update(
+                                {_id: Meteor.user()._id},
+                                {
+                                    $set: {
+                                        lat: latLng.lat,
+                                        lng: latLng.lng,
+                                        name: Meteor.user().emails[0].address,
+                                        surname: "-",
+                                        address: resultFormattedAddress
+                                    }
+                                },
+                                {upsert: true});
                         }
 
-                    }
-                    else {
-                        var name = s.chop(Meteor.user().emails[0].address, 8);
-                        Markers.insert(
-                            {
-                                _id: Meteor.user()._id, name: name[0], surname: "Help", sent: "0",
-                                friend: "-",
-                                lat: "38.014193",
-                                lng: "23.784076"
-                            });
-                    }
+                        // center according to user position and doctor that is heling him
+                        var markers = Markers.find({}).fetch();
+                        if (markers.length === 1) {
+                            map.instance.setCenter({lat: latLng.lat, lng: latLng.lng});
+                            map.instance.setZoom(13);
+                        }
+                        else {
+                            var bounds = new google.maps.LatLngBounds();
+                            for (var i = 0; i < markers.length; i++) {
+                                bounds.extend({lat: markers[i].lat, lng: markers[i].lng});
+                            }
+                            //center the map to the geometric center of all markers
+                            map.instance.setCenter(bounds.getCenter());
+                            map.instance.fitBounds(bounds);
+
+                            // set a maximum zoom
+                            if (map.instance.getZoom() > 13) {
+                                map.instance.setZoom(13);
+                            }
+                            else {
+                                //remove one zoom level to ensure no marker is on the edge.
+                                map.instance.setZoom(map.instance.getZoom() - 1);
+                            }
+                        }
+                    });
                 });
             }
         }
@@ -1164,7 +1251,7 @@ Template.map.onCreated(function () {
                                             focus: "cancel" // which button to autofocus, "cancel" (default) or "ok", or "none"
                                         }, function (ok) {
                                             if (ok) {
-                                                var meteorUser = s.chop(markerInfo[0].name, 7);
+                                                var meteorUser = s.chop(markerInfo[0].name, 6);
                                                 if (meteorUser[0] !== 'doctor') {
                                                     History.insert({
                                                         history: "[" + new Date().toDateString() + "," + new Date().toLocaleTimeString() + "]" +

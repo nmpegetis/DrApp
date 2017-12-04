@@ -39,7 +39,8 @@ App.setPreference('BackgroundColor', '0x009933ff');
 App.setPreference('HideKeyboardFormAccessoryBar', true);
 App.setPreference('Orientation', 'default');
 App.setPreference('Orientation', 'all', 'ios');
-App.setPreference('android-minSdkVersion' , 19);
+App.setPreference('android-minSdkVersion' , '14');  //Andoid 4.0
+// App.setPreference('android-installLocation' , 'preferExternal'); //http://docs.phonegap.com/phonegap-build/configuring/preferences/  // also internalOnly and auto
 
 // Pass preferences for a particular PhoneGap/Cordova plugin.
 // App.configurePlugin('com.phonegap.plugins.facebookconnect', {

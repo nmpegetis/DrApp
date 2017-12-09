@@ -17,6 +17,9 @@ A Meteor application base on Meteor starter boilerplate with a lot packed in. Wr
 
 ```
 cd myapp
+npm install
+meteor install
+meteor update
 meteor reset
 meteor
 ```
@@ -25,6 +28,9 @@ meteor
 
 ```
 cd myapp
+npm install
+meteor install
+meteor update
 export ROOT_URL=<host_https_url>
 export DPP_DEFAULT_CONNECTION_URL=<host_https_url>
 meteor reset
@@ -42,6 +48,9 @@ meteor \
 
 ```
 cd myapp
+npm install
+meteor install
+meteor update
 meteor npm install -g --save cordova
 sudo chmod -R 755 /Applications/Android\ Studio.app
 meteor add-platform android
@@ -55,6 +64,9 @@ meteor run android-device
 
 ```
 cd myapp
+npm install
+meteor install
+meteor update
 export ROOT_URL=<host_https_url>
 export DPP_DEFAULT_CONNECTION_URL=<host_https_url>
 meteor npm install -g --save cordova
@@ -75,6 +87,9 @@ meteor run android-device \
 
 ```
 cd myapp
+npm install
+meteor install
+meteor update
 meteor npm install -g --save cordova
 meteor add-platform ios
 meteor reset
@@ -87,6 +102,9 @@ meteor run ios-device
 
 ```
 cd myapp
+npm install
+meteor install
+meteor update
 export ROOT_URL=<host_https_url>
 export DPP_DEFAULT_CONNECTION_URL=<host_https_url>
 meteor npm install -g --save cordova

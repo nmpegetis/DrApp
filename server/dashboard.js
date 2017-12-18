@@ -13,7 +13,7 @@ Meteor.publish('markers',function(userEmail,usrId){
         usrId: {type: String}
     }).validate({ usrId });
  if(userEmail == 'admin@gmail.com'){
-    return Markers.find({$or:[{sent: "1"},{sent:"-1"},{request: "1"}]});  // sent:1 not available vehicles, sent:-1 available vehicles, request:1 users that requested a vehicle
+    return Markers.find({$or:[{sent: "1"},{sent:"-1"},{request: "1"}]});  // sent:1 not available doctors, sent:-1 available doctors, request:1 users that requested a doctor
   }
   else {
      return Markers.find({$or:[{friend: userEmail},{_id:usrId}]});

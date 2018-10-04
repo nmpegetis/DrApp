@@ -6,8 +6,7 @@
   },
   "dependencies": {
     "babel-runtime": "^6.26.0",
-    "bcrypt": "^1.0.3",
-    "cordova": "^7.1.0",
-    "meteor-node-stubs": "~0.2.0"
+    "cordova": "^8.1.1",
+    "meteor-node-stubs": "^0.4.1"
   }
 }

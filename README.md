@@ -224,4 +224,4 @@ In the following case scenario a story of creating a user, some doctors and an a
 * **Make sure when running in mobile that the `settings` and `mobile-config` files are configured for your PC preferences**
 * **If you create an output build directory before creating a second one with the same name you should delete the first one**
 ### Premium Support ###
-Have an urgent issue or want help with implementation? Start a conversation with [Christy Jona]().
+Have an urgent issue or want help with implementation? Start a conversation with [Nikolas Begetis](https://www.linkedin.com/in/nmpegetis/).

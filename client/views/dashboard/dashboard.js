@@ -2,7 +2,7 @@ Markers = new Mongo.Collection('markers');
 History = new Mongo.Collection('history');
 
 Meteor.startup(function () {
-    GoogleMaps.load({   //load API
+    GoogleMaps.load({ //load API
         libraries: 'places',
         key: 'AIzaSyBgSrXb5DliuulrK4YkZzpFvGf8Qvy33eI'
     });
@@ -34,7 +34,10 @@ Template.registerHelper('formatDate', function (date) {
 Template.modalAvailableDoctors.helpers({
     aDoctors: function () {
         // Perform a reactive database query against minimongo
-        return Markers.find({sent: "-1", surname: "Help"});
+        return Markers.find({
+            sent: "-1",
+            surname: "Help"
+        });
     }
 });
 
@@ -53,21 +56,24 @@ Template.modalUsers.helpers({
     users: function () {
         // Perform a reactive database query against minimongo
         return Markers.find({
-            $or: [
-                {request: "0"},
-                {request: "1"}
+            $or: [{
+                    request: "0"
+                },
+                {
+                    request: "1"
+                }
             ]
         });
     }
 });
 
-function ButtonControl(controlDiv, map, title) {   //add a doctor
+function ButtonControl(controlDiv, map, title) { //add a doctor
     var controlUI = document.createElement('div');
 
-    if (title == 2)                                    //finish-doctor
+    if (title == 2) //finish-doctor
         controlUI.style.backgroundColor = '#d9534f';
     else
-        controlUI.style.backgroundColor = '#cbe6a3';    //add doctor-admin,start-doctor
+        controlUI.style.backgroundColor = '#cbe6a3'; //add doctor-admin,start-doctor
     controlUI.style.border = 'rgb(102, 255, 102)';
     controlUI.style.marginRight = '20px';
     controlUI.style.borderRadius = '3px';
@@ -83,8 +89,7 @@ function ButtonControl(controlDiv, map, title) {   //add a doctor
     else if (title == 1) {
         controlUI.title = 'Click to start';
         controlUI.style.width = '80px';
-    }
-    else {
+    } else {
         controlUI.title = 'Click to finish';
         controlUI.style.width = '80px';
     }
@@ -107,18 +112,16 @@ function ButtonControl(controlDiv, map, title) {   //add a doctor
     controlUI.appendChild(controlText);
 }
 
-function RightControl(controlDiv, map, title) {     //button request a doctor(0) / cancel request(1) / remove doctor(2)
+function RightControl(controlDiv, map, title) { //button request a doctor(0) / cancel request(1) / remove doctor(2)
     // Set CSS for the control border.
     var controlUI = document.createElement('div');
     if (title == 0) {
         controlUI.style.backgroundColor = '#cbe6a3';
         controlUI.style.border = 'rgb(102, 255, 102)';
-    }
-    else if (title == 1) {
+    } else if (title == 1) {
         controlUI.style.backgroundColor = 'rgb(192, 192, 192)';
         controlUI.style.border = 'rgb(192, 192, 192)';
-    }
-    else {
+    } else {
         controlUI.style.backgroundColor = 'rgb(192, 192, 192)';
         controlUI.style.border = 'rgb(192, 192, 192)';
     }
@@ -133,11 +136,9 @@ function RightControl(controlDiv, map, title) {     //button request a doctor(0)
     controlUI.style.width = '155px';
     if (title == 0) {
         controlUI.title = 'Click to request for a doctor';
-    }
-    else if (title == 1) {
+    } else if (title == 1) {
         controlUI.title = 'Click to cancel the request';
-    }
-    else {
+    } else {
         controlUI.title = 'Click to remove doctor';
     }
     controlDiv.appendChild(controlUI);
@@ -152,11 +153,9 @@ function RightControl(controlDiv, map, title) {     //button request a doctor(0)
     controlText.style.paddingRight = '5px';
     if (title == 0) {
         controlText.innerHTML = 'Request for doctor';
-    }
-    else if (title == 1) {
+    } else if (title == 1) {
         controlText.innerHTML = 'Cancel request';
-    }
-    else {
+    } else {
         controlText.innerHTML = 'Remove doctor';
     }
     controlUI.appendChild(controlText);
@@ -164,24 +163,29 @@ function RightControl(controlDiv, map, title) {     //button request a doctor(0)
 
 function getDistance(user, doctor) {
     var R = 6378137; // Earth’s mean radius in meter
-    var radUserLat = (user.lat * Math.PI) / 180;    // degrees to rad
-    var radUserLng = (user.lng * Math.PI) / 180;    // degrees to rad
-    var radVehLat = (doctor.lat * Math.PI) / 180;  // degrees to rad
-    var radVehLng = (doctor.lng * Math.PI) / 180;  // degrees to rad
+    var radUserLat = (user.lat * Math.PI) / 180; // degrees to rad
+    var radUserLng = (user.lng * Math.PI) / 180; // degrees to rad
+    var radVehLat = (doctor.lat * Math.PI) / 180; // degrees to rad
+    var radVehLng = (doctor.lng * Math.PI) / 180; // degrees to rad
     var dLat = radUserLat - radVehLat;
     var dLng = radUserLng - radVehLng;
     var a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
         Math.cos(radUserLat) * Math.cos(radVehLat) *
         Math.sin(dLng / 2) * Math.sin(dLng / 2);
-    var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));   //the arctangent
+    var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a)); //the arctangent
     var d = R * c;
-    return d;                                     // returns the distance in meter
+    return d; // returns the distance in meter
 }
 
 function showInfo(infowindow, usrInfo, geocoder, openMarker, map) {
     var resultFormattedAddress;
-    var latlng = {lat: usrInfo[0].lat, lng: usrInfo[0].lng};
-    geocoder.geocode({'location': latlng}, function (results, status) {
+    var latlng = {
+        lat: usrInfo[0].lat,
+        lng: usrInfo[0].lng
+    };
+    geocoder.geocode({
+        'location': latlng
+    }, function (results, status) {
         if (status === 'OK') {
             if (results[0]) {
                 resultFormattedAddress = results[0].formatted_address;
@@ -240,15 +244,15 @@ Template.map.onCreated(function () {
 
         if (Meteor.user().roles == 'admin') {
             var markerReq;
-            var addButtonControlDiv = document.createElement('div');    //add a doctor
+            var addButtonControlDiv = document.createElement('div'); //add a doctor
             addButtonControlDiv.index = 1;
             var addButtonControl = new ButtonControl(addButtonControlDiv, map, 0);
             map.instance.controls[7].push(addButtonControlDiv);
 
-            var menubar = document.getElementById('menuBar');       //menu bar in admin
+            var menubar = document.getElementById('menuBar'); //menu bar in admin
             map.instance.controls[4].push(menubar);
 
-            var searchbox = document.getElementById('pac-input');   //searchbox in admin
+            var searchbox = document.getElementById('pac-input'); //searchbox in admin
             map.instance.controls[2].push(searchbox);
             /*** Modal Windows for History,Users,Available doctors,Unavailable doctors***/
             var history = document.getElementById('history');
@@ -276,7 +280,9 @@ Template.map.onCreated(function () {
                 if (event.which == KeyCodes.ENTER) {
                     var searchNameCount = Markers.find({
                         name: searchbox.value,
-                        friend: {$exists: true}
+                        friend: {
+                            $exists: true
+                        }
                     }).count();
                     if (searchNameCount != 0) {
                         var searchName = Markers.find({
@@ -285,8 +291,7 @@ Template.map.onCreated(function () {
                         var nameMarker = markers[searchName[0]._id];
                         if (searchName[0].friend == '-') {
                             showInfo(infowindow0, searchName, geocoder, nameMarker, map);
-                        }
-                        else {
+                        } else {
                             var friendName = searchName[0].friend;
                             var usrName = Markers.find({
                                 name: searchName[0].friend
@@ -295,15 +300,13 @@ Template.map.onCreated(function () {
                             showInfo(infowindow0, searchName, geocoder, nameMarker, map);
                             showInfo(infowindow1, usrName, geocoder, usrMarker, map);
                         }
-                    }
-                    else {
-                        var searchNameCount = Markers.find({    //user or none
+                    } else {
+                        var searchNameCount = Markers.find({ //user or none
                             name: searchbox.value
                         }).count();
-                        if (searchNameCount == 0) {     //none
+                        if (searchNameCount == 0) { //none
                             Bert.alert("Unknown name. Neither doctor nor user exists with this name.", 'danger', 'fixed-top', 'fa-frown-o');
-                        }
-                        else {                        //user
+                        } else { //user
                             var usrMarker = Markers.find({
                                 name: searchbox.value
                             }).fetch();
@@ -318,7 +321,7 @@ Template.map.onCreated(function () {
                     }
                 }
             });
-            self.autorun(function () {        //change marker color, red for unavailable/green for available
+            self.autorun(function () { //change marker color, red for unavailable/green for available
                 var countVeh = Markers.find({
                     surname: "Help"
                 }).count();
@@ -341,8 +344,10 @@ Template.map.onCreated(function () {
             });
 
             self.autorun(function () {
-                Meteor.subscribe('markers', Meteor.user().emails[0].address, Meteor.user()._id);   //own markers
-                if (Markers.find({request: "1"}).count() != 0) {
+                Meteor.subscribe('markers', Meteor.user().emails[0].address, Meteor.user()._id); //own markers
+                if (Markers.find({
+                        request: "1"
+                    }).count() != 0) {
                     markerReq = Markers.find({
                         request: "1"
                     }).fetch();
@@ -357,14 +362,13 @@ Template.map.onCreated(function () {
                         sent: "-1"
                     }).count();
                     if (countVeh == 0) {
-                        openMarker.setAnimation(google.maps.Animation.BOUNCE);    //bounce if doctor not assigned to user's request
-                    }
-                    else if (countVeh != 0) {
+                        openMarker.setAnimation(google.maps.Animation.BOUNCE); //bounce if doctor not assigned to user's request
+                    } else if (countVeh != 0) {
                         if (openMarker.getAnimation() !== null) {
-                            openMarker.setAnimation(null);                          //stop bouncing if doctor assigned to user's request
+                            openMarker.setAnimation(null); //stop bouncing if doctor assigned to user's request
                         }
                         /********* Algorithm to find nearest available doctor *****************/
-                        var doctors = Markers.find({       //available doctors
+                        var doctors = Markers.find({ //available doctors
                             surname: "Help",
                             sent: "-1"
                         }).fetch();
@@ -375,48 +379,71 @@ Template.map.onCreated(function () {
                             if (i == 0) {
                                 minDist = dist;
                                 VehMinDist = i;
-                            }
-                            else {
+                            } else {
                                 if (dist <= minDist) {
                                     minDist = dist;
                                     VehMinDist = i;
                                 }
                             }
                         }
-                        Markers.update(
-                            {_id: doctors[VehMinDist]._id},
-                            {$set: {sent: "1", friend: markerReq[0].name}}
-                        );
+                        Markers.update({
+                            _id: doctors[VehMinDist]._id
+                        }, {
+                            $set: {
+                                sent: "1",
+                                friend: markerReq[0].name
+                            }
+                        });
                         if (doctors[VehMinDist]._id == "YJCyj5mKcpWJa3aPk") {
-                            Markers.update(
-                                {_id: markerReq[0]._id},
-                                {$set: {sent: "1", request: "0", friend: "doctor1@gmail.com"}}
-                            );
-                        }
-                        else {
-                            Markers.update(
-                                {_id: markerReq[0]._id},
-                                {$set: {sent: "1", request: "0"}}
-                            );
+                            Markers.update({
+                                _id: markerReq[0]._id
+                            }, {
+                                $set: {
+                                    sent: "1",
+                                    request: "0",
+                                    friend: "doctor1@gmail.com"
+                                }
+                            });
+                        } else {
+                            Markers.update({
+                                _id: markerReq[0]._id
+                            }, {
+                                $set: {
+                                    sent: "1",
+                                    request: "0"
+                                }
+                            });
                         }
                         /*******************************************************/
                         History.insert({
                             history: "[" + new Date().toDateString() + "," + new Date().toLocaleTimeString() + "]" +
-                            " " + doctors[VehMinDist].name + " was sent to help user: " + markerReq[0].name + "."
+                                " " + doctors[VehMinDist].name + " was sent to help user: " + markerReq[0].name + "."
                         });
                     }
                 }
             });
             self.autorun(function () {
-                var bounceCount = Markers.find({name: "doctor@gmail.com", bounce: "1"}).count();
+                var bounceCount = Markers.find({
+                    name: "doctor@gmail.com",
+                    bounce: "1"
+                }).count();
                 if (bounceCount != 0) {
-                    var bounceMarker = Markers.find({name: "doctor@gmail.com", bounce: "1"}).fetch();
+                    var bounceMarker = Markers.find({
+                        name: "doctor@gmail.com",
+                        bounce: "1"
+                    }).fetch();
                     var bounce = markers[bounceMarker[0]._id];
                     bounce.setAnimation(google.maps.Animation.BOUNCE);
                     setTimeout(function () {
                         bounce.setAnimation(null);
                     }, 1500);
-                    Markers.update({_id: bounceMarker[0]._id}, {$unset: {bounce: ""}});
+                    Markers.update({
+                        _id: bounceMarker[0]._id
+                    }, {
+                        $unset: {
+                            bounce: ""
+                        }
+                    });
                 }
             });
             addButtonControlDiv.addEventListener('click', function () {
@@ -431,8 +458,13 @@ Template.map.onCreated(function () {
                     if (ok) {
                         google.maps.event.addListenerOnce(map.instance, 'click', function (event) {
                             var resultFormattedAddress;
-                            var latlng = {lat: event.latLng.lat(), lng: event.latLng.lng()};
-                            geocoder.geocode({'location': latlng}, function (results, status) {
+                            var latlng = {
+                                lat: event.latLng.lat(),
+                                lng: event.latLng.lng()
+                            };
+                            geocoder.geocode({
+                                'location': latlng
+                            }, function (results, status) {
                                 if (status === 'OK') {
                                     if (results[0]) {
                                         resultFormattedAddress = results[0].formatted_address;
@@ -460,7 +492,7 @@ Template.map.onCreated(function () {
                                 }).fetch();
                                 History.insert({
                                     history: "[" + new Date().toDateString() + "," + new Date().toLocaleTimeString() + "]" +
-                                    " Admin added a doctor: " + doctor[0].name + "."
+                                        " Admin added a doctor: " + doctor[0].name + "."
                                 });
                             });
                         });
@@ -485,7 +517,7 @@ Template.map.onCreated(function () {
                 // bounds.extend({lat: markers[i].lat, lng: markers[i].lng});
             }
 
-//new
+            //new
             //center the map to the geometric center of all markers
             map.instance.setCenter(bounds.getCenter());
             map.instance.fitBounds(bounds);
@@ -495,30 +527,29 @@ Template.map.onCreated(function () {
             // if you got only 1 marker or all markers are on the same address map will be zoomed too much.
             if (map.instance.getZoom() > 13) {
                 map.instance.setZoom(13);
-            }
-            else {
+            } else {
                 //remove one zoom level to ensure no marker is on the edge.
                 map.instance.setZoom(map.instance.getZoom() - 1);
             }
         }
-//todo here starts user and doctor
+        //todo here starts user and doctor
         if (!!Meteor.user().roles === false) { //if not an admin
             self.autorun(function () {
                 Meteor.subscribe('history');
             });
             var meteorUser = s.chop(Meteor.user().emails[0].address, 6);
 
-            if (meteorUser[0] !== 'doctor') {      //simple user
+            if (meteorUser[0] !== 'doctor') { //simple user
                 var marker; //marker for geolocation
-                var requestControlDiv = document.createElement('div');    //request for a doctor
+                var requestControlDiv = document.createElement('div'); //request for a doctor
                 requestControlDiv.index = 1;
                 var rightControl = new RightControl(requestControlDiv, map, 0);
 
-                var cancelControlDiv = document.createElement('div');   //cancel request
+                var cancelControlDiv = document.createElement('div'); //cancel request
                 cancelControlDiv.index = 1;
                 var cancelControl = new RightControl(cancelControlDiv, map, 1);
 
-                var removeControlDiv = document.createElement('div');   //remove doctor
+                var removeControlDiv = document.createElement('div'); //remove doctor
                 removeControlDiv.index = 1;
                 var removeControl = new RightControl(removeControlDiv, map, 2);
 
@@ -528,7 +559,9 @@ Template.map.onCreated(function () {
                     Meteor.subscribe('markers', Meteor.user().emails[0].address, Meteor.user()._id); //each user has dif friends
                     latLng = Geolocation.latLng();
                     var resultFormattedAddress;
-                    geocoder.geocode({'location': latLng}, function (results, status) {
+                    geocoder.geocode({
+                        'location': latLng
+                    }, function (results, status) {
                         if (status === 'OK') {
                             if (results[0]) {
                                 resultFormattedAddress = results[0].formatted_address;
@@ -549,47 +582,53 @@ Template.map.onCreated(function () {
                                 id: document._id,
                                 title: 'Me'
                             });
-                            Markers.update(
-                                {_id: Meteor.user()._id},
-                                {
-                                    $set: {
-                                        lat: latLng.lat,
-                                        lng: latLng.lng,
-                                        name: Meteor.user().emails[0].address,
-                                        surname: "-",
-                                        address: resultFormattedAddress
-                                    }
-                                },
-                                {upsert: true}
-                            );
+                            Markers.update({
+                                _id: Meteor.user()._id
+                            }, {
+                                $set: {
+                                    lat: latLng.lat,
+                                    lng: latLng.lng,
+                                    name: Meteor.user().emails[0].address,
+                                    surname: "-",
+                                    address: resultFormattedAddress
+                                }
+                            }, {
+                                upsert: true
+                            });
                         }
                         // The marker already exists, so we'll just change its position.
                         else {
                             marker.setPosition(latLng);
-                            Markers.update(
-                                {_id: Meteor.user()._id},
-                                {
-                                    $set: {
-                                        lat: latLng.lat,
-                                        lng: latLng.lng,
-                                        name: Meteor.user().emails[0].address,
-                                        surname: "-",
-                                        address: resultFormattedAddress
-                                    }
-                                },
-                                {upsert: true});
+                            Markers.update({
+                                _id: Meteor.user()._id
+                            }, {
+                                $set: {
+                                    lat: latLng.lat,
+                                    lng: latLng.lng,
+                                    name: Meteor.user().emails[0].address,
+                                    surname: "-",
+                                    address: resultFormattedAddress
+                                }
+                            }, {
+                                upsert: true
+                            });
                         }
 
                         // center according to user position and doctor that is heling him
                         var markers = Markers.find({}).fetch();
                         if (markers.length === 1) {
-                            map.instance.setCenter({lat: latLng.lat, lng: latLng.lng});
+                            map.instance.setCenter({
+                                lat: latLng.lat,
+                                lng: latLng.lng
+                            });
                             map.instance.setZoom(13);
-                        }
-                        else {
+                        } else {
                             var bounds = new google.maps.LatLngBounds();
                             for (var i = 0; i < markers.length; i++) {
-                                bounds.extend({lat: markers[i].lat, lng: markers[i].lng});
+                                bounds.extend({
+                                    lat: markers[i].lat,
+                                    lng: markers[i].lng
+                                });
                             }
                             //center the map to the geometric center of all markers
                             map.instance.setCenter(bounds.getCenter());
@@ -598,8 +637,7 @@ Template.map.onCreated(function () {
                             // set a maximum zoom
                             if (map.instance.getZoom() > 13) {
                                 map.instance.setZoom(13);
-                            }
-                            else {
+                            } else {
                                 //remove one zoom level to ensure no marker is on the edge.
                                 map.instance.setZoom(map.instance.getZoom() - 1);
                             }
@@ -607,126 +645,149 @@ Template.map.onCreated(function () {
                     });
                 });
 
-                requestControlDiv.addEventListener('click', function () {    //Request for doctor --> Cancel request
+                requestControlDiv.addEventListener('click', function () { //Request for doctor --> Cancel request
                     new Confirmation({
-                            message: "Are you sure you need help?",
-                            title: "You are about to request for a doctor! The first available doctor will arrive to you soon",
-                            cancelText: "Cancel",
-                            okText: "Yes, I need help",
-                            success: true,
-                            focus: "cancel"
-                        }, function (ok) {
-                            if (ok) {
-                                var reques = Markers.find({
-                                    _id: Meteor.user()._id
-                                }).fetch();
-                                Markers.update(
-                                    {_id: Meteor.user()._id},
-                                    {
-                                        $set: {
-                                            request: "1",
-                                            date: new Date().toDateString(),
-                                            time: new Date().toLocaleTimeString()
-                                        }
-                                    }
-                                );
-                                History.insert({
-                                    history: "[" + new Date().toDateString() + "," + new Date().toLocaleTimeString() + "]" +
-                                    " User: " + reques[0].name + " requested a doctor."
-                                });
-                                map.instance.controls[7].pop(requestControlDiv);
-                                map.instance.controls[7].push(cancelControlDiv);
-                            }
-                        }
-                    );
-                });
-
-                cancelControlDiv.addEventListener('click', function () {   //Cancel request --> Request for doctor
-                    new Confirmation({
-                            message: "Are you sure you want to cancel the request?",
-                            title: "You are about to cancel the request for help.",
-                            cancelText: "No, don't cancel!",
-                            okText: "Yes, cancel the request",
-                            width: 100,
-                            success: true, // whether the button should be green or red
-                            focus: "cancel" // which button to autofocus, "cancel" (default) or "ok", or "none"
-                        }, function (ok) {
-                            if (ok) {
-                                var reques = Markers.find({
-                                    _id: Meteor.user()._id
-                                }).fetch();
-                                History.insert({
-                                    history: "[" + new Date().toDateString() + "," + new Date().toLocaleTimeString() + "]" +
-                                    " User: " + reques[0].name + " canceled the request."
-                                });
-                                Markers.update(
-                                    {_id: Meteor.user()._id},
-                                    {$set: {request: "0"}}
-                                );
-                                map.instance.controls[7].pop(cancelControlDiv);
-                                map.instance.controls[7].push(requestControlDiv);
-                            }
-                        }
-                    );
-                });
-
-                removeControlDiv.addEventListener('click', function () {  //Remove doctor --> Request for doctor
-                    new Confirmation({
-                            message: "Are you sure?",
-                            title: "You are about to dismiss the doctor.",
-                            cancelText: "Cancel",
-                            okText: "Yes",
-                            focus: "cancel" // which button to autofocus, "cancel" (default) or "ok", or "none"
-                        }, function (ok) {
-                            if (ok) {
-                                var removeDoctor = Markers.find({
-                                    sent: "1",
-                                    request: {$exists: false}
-                                }).fetch();
-                                var reques = Markers.find({
-                                    _id: Meteor.user()._id
-                                }).fetch();
-                                History.insert({
-                                    history: "[" + new Date().toDateString() + "," + new Date().toLocaleTimeString() + "] " +
-                                    "User: " + reques[0].name + " removed doctor: " + removeDoctor[0].name + "."
-                                });
-                                Markers.update(
-                                    {_id: removeDoctor[0]._id},
-                                    {$set: {sent: "-1"}}
-                                );
-                                Markers.update(
-                                    {_id: removeDoctor[0]._id},
-                                    {$set: {friend: "-"}}
-                                );
-                                Markers.update(
-                                    {_id: Meteor.user()._id},
-                                    {$set: {sent: "0"}}
-                                );
-                                if (removeDoctor[0]._id == "YJCyj5mKcpWJa3aPk") {
-                                    Markers.update(
-                                        {_id: Meteor.user()._id},
-                                        {$unset: {friend: ""}}
-                                    );
+                        message: "Are you sure you need help?",
+                        title: "You are about to request for a doctor! The first available doctor will arrive to you soon",
+                        cancelText: "Cancel",
+                        okText: "Yes, I need help",
+                        success: true,
+                        focus: "cancel"
+                    }, function (ok) {
+                        if (ok) {
+                            var reques = Markers.find({
+                                _id: Meteor.user()._id
+                            }).fetch();
+                            Markers.update({
+                                _id: Meteor.user()._id
+                            }, {
+                                $set: {
+                                    request: "1",
+                                    date: new Date().toDateString(),
+                                    time: new Date().toLocaleTimeString()
                                 }
+                            });
+                            History.insert({
+                                history: "[" + new Date().toDateString() + "," + new Date().toLocaleTimeString() + "]" +
+                                    " User: " + reques[0].name + " requested a doctor."
+                            });
+                            map.instance.controls[7].pop(requestControlDiv);
+                            map.instance.controls[7].push(cancelControlDiv);
+                        }
+                    });
+                });
+
+                cancelControlDiv.addEventListener('click', function () { //Cancel request --> Request for doctor
+                    new Confirmation({
+                        message: "Are you sure you want to cancel the request?",
+                        title: "You are about to cancel the request for help.",
+                        cancelText: "No, don't cancel!",
+                        okText: "Yes, cancel the request",
+                        width: 100,
+                        success: true, // whether the button should be green or red
+                        focus: "cancel" // which button to autofocus, "cancel" (default) or "ok", or "none"
+                    }, function (ok) {
+                        if (ok) {
+                            var reques = Markers.find({
+                                _id: Meteor.user()._id
+                            }).fetch();
+                            History.insert({
+                                history: "[" + new Date().toDateString() + "," + new Date().toLocaleTimeString() + "]" +
+                                    " User: " + reques[0].name + " canceled the request."
+                            });
+                            Markers.update({
+                                _id: Meteor.user()._id
+                            }, {
+                                $set: {
+                                    request: "0"
+                                }
+                            });
+                            map.instance.controls[7].pop(cancelControlDiv);
+                            map.instance.controls[7].push(requestControlDiv);
+                        }
+                    });
+                });
+
+                removeControlDiv.addEventListener('click', function () { //Remove doctor --> Request for doctor
+                    new Confirmation({
+                        message: "Are you sure?",
+                        title: "You are about to dismiss the doctor.",
+                        cancelText: "Cancel",
+                        okText: "Yes",
+                        focus: "cancel" // which button to autofocus, "cancel" (default) or "ok", or "none"
+                    }, function (ok) {
+                        if (ok) {
+                            var removeDoctor = Markers.find({
+                                sent: "1",
+                                request: {
+                                    $exists: false
+                                }
+                            }).fetch();
+                            var reques = Markers.find({
+                                _id: Meteor.user()._id
+                            }).fetch();
+                            History.insert({
+                                history: "[" + new Date().toDateString() + "," + new Date().toLocaleTimeString() + "] " +
+                                    "User: " + reques[0].name + " removed doctor: " + removeDoctor[0].name + "."
+                            });
+                            Markers.update({
+                                _id: removeDoctor[0]._id
+                            }, {
+                                $set: {
+                                    sent: "-1"
+                                }
+                            });
+                            Markers.update({
+                                _id: removeDoctor[0]._id
+                            }, {
+                                $set: {
+                                    friend: "-"
+                                }
+                            });
+                            Markers.update({
+                                _id: Meteor.user()._id
+                            }, {
+                                $set: {
+                                    sent: "0"
+                                }
+                            });
+                            if (removeDoctor[0]._id == "YJCyj5mKcpWJa3aPk") {
+                                Markers.update({
+                                    _id: Meteor.user()._id
+                                }, {
+                                    $unset: {
+                                        friend: ""
+                                    }
+                                });
                             }
                         }
-                    );
+                    });
                 });
 
                 self.autorun(function () {
-                    if (Markers.find({sent: "1", request: {$exists: false}}).count() != 0) {   //change cancel button to remove button
+                    if (Markers.find({
+                            sent: "1",
+                            request: {
+                                $exists: false
+                            }
+                        }).count() != 0) { //change cancel button to remove button
                         map.instance.controls[7].pop(cancelControlDiv);
                         map.instance.controls[7].push(removeControlDiv);
                     }
                 });
                 self.autorun(function () {
-                    if (Markers.find({sent: "0"}).count() != 0) {                              //change remove button to request button
+                    if (Markers.find({
+                            sent: "0"
+                        }).count() != 0) { //change remove button to request button
                         map.instance.controls[7].pop(removeControlDiv);
                         map.instance.controls[7].push(requestControlDiv);
-                        Markers.update(
-                            {_id: Meteor.user()._id},
-                            {$unset: {sent: ""}}
-                        );
+                        Markers.update({
+                            _id: Meteor.user()._id
+                        }, {
+                            $unset: {
+                                sent: ""
+                            }
+                        });
                         Bert.alert({
                             title: 'We were happy to be of assistance!',
                             type: 'info',
@@ -735,25 +796,29 @@ Template.map.onCreated(function () {
                     }
                 });
                 self.autorun(function () {
-                    if (Markers.find({request: "1"}).count() != 0) {    //change add button to cancel button after log in
+                    if (Markers.find({
+                            request: "1"
+                        }).count() != 0) { //change add button to cancel button after log in
                         map.instance.controls[7].pop(requestControlDiv);
                         map.instance.controls[7].push(cancelControlDiv);
                     }
                 });
                 self.autorun(function () {
-                    if (Markers.find({surname: "Help", sent: "1"}).count() != 0) {   //change request button to remove button after log in
+                    if (Markers.find({
+                            surname: "Help",
+                            sent: "1"
+                        }).count() != 0) { //change request button to remove button after log in
                         map.instance.controls[7].pop(requestControlDiv);
                         map.instance.controls[7].push(removeControlDiv);
                     }
                 });
-            }
-            else {           //doctor user
-                var startButtonControlDiv = document.createElement('div');    //start button
+            } else { //doctor user
+                var startButtonControlDiv = document.createElement('div'); //start button
                 startButtonControlDiv.index = 1;
                 var startButtonControl = new ButtonControl(startButtonControlDiv, map, 1);
                 map.instance.controls[7].push(startButtonControlDiv);
 
-                var finishButtonControlDiv = document.createElement('div');    //finish button
+                var finishButtonControlDiv = document.createElement('div'); //finish button
                 finishButtonControlDiv.index = 1;
                 var finishButtonControl = new ButtonControl(finishButtonControlDiv, map, 2);
 
@@ -769,7 +834,9 @@ Template.map.onCreated(function () {
                         focus: "cancel"
                     }, function (ok) {
                         if (ok) {
-                            Markers.update({_id: Meteor.user()._id}, {
+                            Markers.update({
+                                _id: Meteor.user()._id
+                            }, {
                                 $set: {
                                     sent: "-1",
                                     date: date,
@@ -795,7 +862,9 @@ Template.map.onCreated(function () {
                         if (ok) {
                             map.instance.controls[7].pop(finishButtonControlDiv);
                             map.instance.controls[7].push(startButtonControlDiv);
-                            Markers.update({_id: Meteor.user()._id}, {
+                            Markers.update({
+                                _id: Meteor.user()._id
+                            }, {
                                 $set: {
                                     sent: "0",
                                     date: new Date().toDateString(),
@@ -805,14 +874,22 @@ Template.map.onCreated(function () {
                             History.insert({
                                 history: "[" + new Date().toDateString() + "," + new Date().toLocaleTimeString() + "]" + " Doctor@gmail.com loged out."
                             });
-                            Markers.update({_id: Meteor.user().id}, {$unset: {bounce: ""}});
+                            Markers.update({
+                                _id: Meteor.user().id
+                            }, {
+                                $unset: {
+                                    bounce: ""
+                                }
+                            });
                         }
                     });
                 });
                 self.autorun(function () {
                     var markersCount = Markers.find().count();
                     if (markersCount != 0) {
-                        var markers = Markers.find({_id: Meteor.user()._id}).fetch();
+                        var markers = Markers.find({
+                            _id: Meteor.user()._id
+                        }).fetch();
                         if (markers[0].sent == "1" || markers[0].sent == "-1") {
                             map.instance.controls[7].pop(startButtonControlDiv);
                             map.instance.controls[7].push(finishButtonControlDiv);
@@ -823,7 +900,9 @@ Template.map.onCreated(function () {
                     Meteor.subscribe('markers', Meteor.user().emails[0].address, Meteor.user()._id);
                     var latLng = Geolocation.latLng();
                     var resultFormattedAddress;
-                    geocoder.geocode({'location': latLng}, function (results, status) {
+                    geocoder.geocode({
+                        'location': latLng
+                    }, function (results, status) {
                         if (status === 'OK') {
                             if (results[0]) {
                                 resultFormattedAddress = results[0].formatted_address;
@@ -851,37 +930,36 @@ Template.map.onCreated(function () {
                                 title: 'Me',
                                 sent: "0"
                             });
-                            if (marker.sent == "1"){
-                                Markers.update(
-                                    {_id: Meteor.user()._id},
-                                    {
-                                        $set: {
-                                            lat: latLng.lat,
-                                            lng: latLng.lng,
-                                            name: Meteor.user().emails[0].address,
-                                            surname: "Help",
-                                            address: resultFormattedAddress,
-                                            icon: 'https://maps.google.com/mapfiles/ms/icons/red-dot.png'
-                                        }
-                                    },
-                                    {upsert: true}
-                                );
-                            }
-                            else {
-                                Markers.update(
-                                    {_id: Meteor.user()._id},
-                                    {
-                                        $set: {
-                                            lat: latLng.lat,
-                                            lng: latLng.lng,
-                                            name: Meteor.user().emails[0].address,
-                                            surname: "Help",
-                                            address: resultFormattedAddress,
-                                            icon: 'https://maps.google.com/mapfiles/ms/icons/green-dot.png'
-                                        }
-                                    },
-                                    {upsert: true}
-                                );
+                            if (marker.sent == "1") {
+                                Markers.update({
+                                    _id: Meteor.user()._id
+                                }, {
+                                    $set: {
+                                        lat: latLng.lat,
+                                        lng: latLng.lng,
+                                        name: Meteor.user().emails[0].address,
+                                        surname: "Help",
+                                        address: resultFormattedAddress,
+                                        icon: 'https://maps.google.com/mapfiles/ms/icons/red-dot.png'
+                                    }
+                                }, {
+                                    upsert: true
+                                });
+                            } else {
+                                Markers.update({
+                                    _id: Meteor.user()._id
+                                }, {
+                                    $set: {
+                                        lat: latLng.lat,
+                                        lng: latLng.lng,
+                                        name: Meteor.user().emails[0].address,
+                                        surname: "Help",
+                                        address: resultFormattedAddress,
+                                        icon: 'https://maps.google.com/mapfiles/ms/icons/green-dot.png'
+                                    }
+                                }, {
+                                    upsert: true
+                                });
                             }
                             if (marker.sent == "-1" || marker.sent == "1") {
                                 map.instance.controls[7].pop(startButtonControlDiv);
@@ -891,30 +969,36 @@ Template.map.onCreated(function () {
                         // The marker already exists, so we'll just change its position.
                         else {
                             marker.setPosition(latLng);
-                            Markers.update(
-                                {_id: Meteor.user()._id},
-                                {
-                                    $set: {
-                                        lat: latLng.lat,
-                                        lng: latLng.lng,
-                                        name: Meteor.user().emails[0].address,
-                                        surname: "-",
-                                        address: resultFormattedAddress
-                                    }
-                                },
-                                {upsert: true});
+                            Markers.update({
+                                _id: Meteor.user()._id
+                            }, {
+                                $set: {
+                                    lat: latLng.lat,
+                                    lng: latLng.lng,
+                                    name: Meteor.user().emails[0].address,
+                                    surname: "-",
+                                    address: resultFormattedAddress
+                                }
+                            }, {
+                                upsert: true
+                            });
                         }
 
                         // center according to user position and doctor that is heling him
                         var markers = Markers.find({}).fetch();
                         if (markers.length === 1) {
-                            map.instance.setCenter({lat: latLng.lat, lng: latLng.lng});
+                            map.instance.setCenter({
+                                lat: latLng.lat,
+                                lng: latLng.lng
+                            });
                             map.instance.setZoom(13);
-                        }
-                        else {
+                        } else {
                             var bounds = new google.maps.LatLngBounds();
                             for (var i = 0; i < markers.length; i++) {
-                                bounds.extend({lat: markers[i].lat, lng: markers[i].lng});
+                                bounds.extend({
+                                    lat: markers[i].lat,
+                                    lng: markers[i].lng
+                                });
                             }
                             //center the map to the geometric center of all markers
                             map.instance.setCenter(bounds.getCenter());
@@ -923,8 +1007,7 @@ Template.map.onCreated(function () {
                             // set a maximum zoom
                             if (map.instance.getZoom() > 13) {
                                 map.instance.setZoom(13);
-                            }
-                            else {
+                            } else {
                                 //remove one zoom level to ensure no marker is on the edge.
                                 map.instance.setZoom(map.instance.getZoom() - 1);
                             }
@@ -934,7 +1017,14 @@ Template.map.onCreated(function () {
             }
         }
 
-        Markers.find({request: {$exists: true}, _id: {$ne: Meteor.user()._id}}).observe({   //user's request in admin panel
+        Markers.find({
+            request: {
+                $exists: true
+            },
+            _id: {
+                $ne: Meteor.user()._id
+            }
+        }).observe({ //user's request in admin panel
             added: function (doc) {
                 var marker = new google.maps.Marker({
                     draggable: false,
@@ -958,8 +1048,13 @@ Template.map.onCreated(function () {
                     var markerInfo = Markers.find({
                         _id: marker.id
                     }).fetch();
-                    var latlng = {lat: markerInfo[0].lat, lng: markerInfo[0].lng};
-                    geocoder.geocode({'location': latlng}, function (results, status) {
+                    var latlng = {
+                        lat: markerInfo[0].lat,
+                        lng: markerInfo[0].lng
+                    };
+                    geocoder.geocode({
+                        'location': latlng
+                    }, function (results, status) {
                         if (status === 'OK') {
                             if (results[0]) {
                                 resultFormattedAddress = results[0].formatted_address;
@@ -974,8 +1069,7 @@ Template.map.onCreated(function () {
                                 '<i>Name</i>: ' + markerInfo[0].name + '<br>' + '<br>' + '<i>Address</i>: ' +
                                 resultFormattedAddress + '<br>' + '<br>' + '<button id="btn1" type="button" class="btn btn-danger btn-sm">Delete</button>' +
                                 '</div>';
-                        }
-                        else {
+                        } else {
                             contentString = '<div id="content" style="width:220px; font-weight: bold; height:120px;">' +
                                 '<i>Name</i>: ' + markerInfo[0].name + '<br>' + '<br>' + '<i>Address</i>: ' +
                                 resultFormattedAddress + '</div>';
@@ -988,44 +1082,55 @@ Template.map.onCreated(function () {
                         if (delBtn1) {
                             delBtn1.addEventListener('click', function () {
                                 new Confirmation({
-                                        message: "Are you sure?",
-                                        title: "You are about to remove a user and make a doctor available",
-                                        cancelText: "Cancel",
-                                        okText: "Yes",
-                                        success: true, // whether the button should be green or red
-                                        focus: "cancel" // which button to autofocus, "cancel" (default) or "ok", or "none"
-                                    }, function (ok) {
-                                        if (ok) {
-                                            var doctorMar = Markers.find({
-                                                friend: markerInfo[0].name,
-                                                surname: "Help"
-                                            }).fetch();
-                                            var vehAvail = markers[doctorMar[0]._id];
-                                            History.insert({
-                                                history: "[" + new Date().toDateString() + "," + new Date().toLocaleTimeString() + "]" + " Admin removed user: " + markerInfo[0].name + " and " + doctorMar[0].name +
+                                    message: "Are you sure?",
+                                    title: "You are about to remove a user and make a doctor available",
+                                    cancelText: "Cancel",
+                                    okText: "Yes",
+                                    success: true, // whether the button should be green or red
+                                    focus: "cancel" // which button to autofocus, "cancel" (default) or "ok", or "none"
+                                }, function (ok) {
+                                    if (ok) {
+                                        var doctorMar = Markers.find({
+                                            friend: markerInfo[0].name,
+                                            surname: "Help"
+                                        }).fetch();
+                                        var vehAvail = markers[doctorMar[0]._id];
+                                        History.insert({
+                                            history: "[" + new Date().toDateString() + "," + new Date().toLocaleTimeString() + "]" + " Admin removed user: " + markerInfo[0].name + " and " + doctorMar[0].name +
                                                 " was freed" + "."
-                                            });
-                                            Markers.update(
-                                                {_id: doctorMar[0]._id},
-                                                {$set: {sent: "-1"}}
-                                            );
-                                            Markers.update(
-                                                {_id: doctorMar[0]._id},
-                                                {$set: {friend: "-"}}
-                                            );
-                                            Markers.update(
-                                                {_id: markerInfo[0]._id},
-                                                {$set: {sent: "0"}}
-                                            );
-                                            if (doctorMar[0]._id == "YJCyj5mKcpWJa3aPk") {
-                                                Markers.update(
-                                                    {_id: markerInfo[0]._id},
-                                                    {$unset: {friend: ""}}
-                                                );
+                                        });
+                                        Markers.update({
+                                            _id: doctorMar[0]._id
+                                        }, {
+                                            $set: {
+                                                sent: "-1"
                                             }
+                                        });
+                                        Markers.update({
+                                            _id: doctorMar[0]._id
+                                        }, {
+                                            $set: {
+                                                friend: "-"
+                                            }
+                                        });
+                                        Markers.update({
+                                            _id: markerInfo[0]._id
+                                        }, {
+                                            $set: {
+                                                sent: "0"
+                                            }
+                                        });
+                                        if (doctorMar[0]._id == "YJCyj5mKcpWJa3aPk") {
+                                            Markers.update({
+                                                _id: markerInfo[0]._id
+                                            }, {
+                                                $unset: {
+                                                    friend: ""
+                                                }
+                                            });
                                         }
                                     }
-                                );
+                                });
                             });
                         }
                     });
@@ -1034,7 +1139,10 @@ Template.map.onCreated(function () {
 
             },
             changed: function (newDocument, oldDocument) {
-                markers[newDocument._id].setPosition({lat: newDocument.lat, lng: newDocument.lng});
+                markers[newDocument._id].setPosition({
+                    lat: newDocument.lat,
+                    lng: newDocument.lng
+                });
             },
             removed: function (oldDocument) {
                 // Remove the marker from the map
@@ -1047,7 +1155,15 @@ Template.map.onCreated(function () {
                 delete markers[oldDocument._id];
             }
         });
-        Markers.find({sent: {$exists: true}, request: {$exists: false}, _id: Meteor.user()._id}).observe({
+        Markers.find({
+            sent: {
+                $exists: true
+            },
+            request: {
+                $exists: false
+            },
+            _id: Meteor.user()._id
+        }).observe({
             added: function (doc) {
                 var marker = new google.maps.Marker({
                     draggable: true,
@@ -1062,8 +1178,13 @@ Template.map.onCreated(function () {
                 console.log(markers);
                 google.maps.event.addListener(marker, 'dragend', function (event) {
                     var resultFormattedAddress;
-                    var latlng = {lat: event.latLng.lat(), lng: event.latLng.lng()};
-                    geocoder.geocode({'location': latlng}, function (results, status) {
+                    var latlng = {
+                        lat: event.latLng.lat(),
+                        lng: event.latLng.lng()
+                    };
+                    geocoder.geocode({
+                        'location': latlng
+                    }, function (results, status) {
                         if (status === 'OK') {
                             if (results[0]) {
                                 resultFormattedAddress = results[0].formatted_address;
@@ -1074,8 +1195,7 @@ Template.map.onCreated(function () {
                             window.alert('Geocoder failed due to: ' + status);
                         }
                         Markers.update(
-                            marker.id,
-                            {
+                            marker.id, {
                                 $set: {
                                     lat: event.latLng.lat(),
                                     lng: event.latLng.lng(),
@@ -1090,8 +1210,13 @@ Template.map.onCreated(function () {
                 });
                 google.maps.event.addListener(marker, 'click', function (event) {
                     var resultFormattedAddress;
-                    var latlng = {lat: event.latLng.lat(), lng: event.latLng.lng()};
-                    geocoder.geocode({'location': latlng}, function (results, status) {
+                    var latlng = {
+                        lat: event.latLng.lat(),
+                        lng: event.latLng.lng()
+                    };
+                    geocoder.geocode({
+                        'location': latlng
+                    }, function (results, status) {
                         if (status === 'OK') {
                             if (results[0]) {
                                 resultFormattedAddress = results[0].formatted_address;
@@ -1101,17 +1226,18 @@ Template.map.onCreated(function () {
                         } else {
                             window.alert('Geocoder failed due to: ' + status);
                         }
-                        markerInfo = Markers.find({_id: marker.id}).fetch();
+                        markerInfo = Markers.find({
+                            _id: marker.id
+                        }).fetch();
                         if (markerInfo[0].sent == "1") {
                             contentString = '<div id="content" style="width:230px; font-weight: bold; height:150px;">' +
-                                '<i>Name:</i> ' + markerInfo[0].name + ' to ' + markerInfo[0].friend + '<br>' + '<br>'
-                                + '<i>Address:</i> ' + resultFormattedAddress + '<br>' + '<br>' + '<button id="btn2" type="button" class="btn btn-primary btn-sm">End Task</button>' +
+                                '<i>Name:</i> ' + markerInfo[0].name + ' to ' + markerInfo[0].friend + '<br>' + '<br>' +
+                                '<i>Address:</i> ' + resultFormattedAddress + '<br>' + '<br>' + '<button id="btn2" type="button" class="btn btn-primary btn-sm">End Task</button>' +
                                 '</div>';
-                        }
-                        else {
+                        } else {
                             contentString = '<div id="content" style="width:220px; font-weight: bold; height:120px;">' +
-                                '<i>Name:</i> ' + markerInfo[0].name + ' to ' + markerInfo[0].friend + '<br>' + '<br>'
-                                + '<i>Address:</i> ' + resultFormattedAddress +
+                                '<i>Name:</i> ' + markerInfo[0].name + ' to ' + markerInfo[0].friend + '<br>' + '<br>' +
+                                '<i>Address:</i> ' + resultFormattedAddress +
                                 '</div>';
                         }
                         infowindow.setContent(contentString);
@@ -1130,22 +1256,34 @@ Template.map.onCreated(function () {
                                     focus: "cancel" // which button to autofocus, "cancel" (default) or "ok", or "none"
                                 }, function (ok) {
                                     if (ok) {
-                                        var userVeh = Markers.find({name: markerInfo[0].friend}).fetch();
+                                        var userVeh = Markers.find({
+                                            name: markerInfo[0].friend
+                                        }).fetch();
                                         History.insert({
                                             history: "[" + new Date().toDateString() + "," + new Date().toLocaleTimeString() + "] Doctor@gmail.com completed a task. It served " + markerInfo[0].friend + "."
                                         });
-                                        Markers.update(
-                                            {_id: userVeh[0]._id},
-                                            {$set: {sent: "0"}}
-                                        );
-                                        Markers.update(
-                                            {_id: userVeh[0]._id},
-                                            {$unset: {friend: ""}}
-                                        );
-                                        Markers.update(
-                                            {_id: markerInfo[0]._id},
-                                            {$set: {sent: "-1", friend: "-"}}
-                                        );
+                                        Markers.update({
+                                            _id: userVeh[0]._id
+                                        }, {
+                                            $set: {
+                                                sent: "0"
+                                            }
+                                        });
+                                        Markers.update({
+                                            _id: userVeh[0]._id
+                                        }, {
+                                            $unset: {
+                                                friend: ""
+                                            }
+                                        });
+                                        Markers.update({
+                                            _id: markerInfo[0]._id
+                                        }, {
+                                            $set: {
+                                                sent: "-1",
+                                                friend: "-"
+                                            }
+                                        });
                                         infowindow.close();
                                     }
                                 });
@@ -1155,7 +1293,10 @@ Template.map.onCreated(function () {
                 });
             },
             changed: function (newDocument, oldDocument) {
-                markers[newDocument._id].setPosition({lat: newDocument.lat, lng: newDocument.lng});
+                markers[newDocument._id].setPosition({
+                    lat: newDocument.lat,
+                    lng: newDocument.lng
+                });
             },
             removed: function (oldDocument) {
                 // Remove the marker from the map
@@ -1169,7 +1310,17 @@ Template.map.onCreated(function () {
             }
         });
 
-        Markers.find({sent: {$exists: true}, request: {$exists: false}, _id: {$ne: Meteor.user()._id}}).observe({   //doctors
+        Markers.find({
+            sent: {
+                $exists: true
+            },
+            request: {
+                $exists: false
+            },
+            _id: {
+                $ne: Meteor.user()._id
+            }
+        }).observe({ //doctors
             added: function (doc) {
                 if (Meteor.user().roles == 'admin') {
                     var marker = new google.maps.Marker({
@@ -1180,8 +1331,7 @@ Template.map.onCreated(function () {
                         icon: 'https://maps.google.com/mapfiles/ms/icons/green-dot.png',
                         id: doc._id
                     });
-                }
-                else {
+                } else {
                     var marker = new google.maps.Marker({
                         draggable: false,
                         animation: google.maps.Animation.DROP,
@@ -1205,11 +1355,15 @@ Template.map.onCreated(function () {
                 google.maps.event.addListener(marker, 'click', function (event) {
                     var resultFormattedAddress;
                     var markerInfo = Markers.find({
-                            _id: marker.id
-                        }
-                    ).fetch();
-                    var latlng = {lat: markerInfo[0].lat, lng: markerInfo[0].lng};
-                    geocoder.geocode({'location': latlng}, function (results, status) {
+                        _id: marker.id
+                    }).fetch();
+                    var latlng = {
+                        lat: markerInfo[0].lat,
+                        lng: markerInfo[0].lng
+                    };
+                    geocoder.geocode({
+                        'location': latlng
+                    }, function (results, status) {
                         if (status === 'OK') {
                             if (results[0]) {
                                 resultFormattedAddress = results[0].formatted_address;
@@ -1221,14 +1375,13 @@ Template.map.onCreated(function () {
                         }
                         if (Meteor.user().roles == 'admin') {
                             contentString = '<div id="content" style="width:220px; font-weight: bold; height:150px;">' +
-                                '<i>Name:</i> ' + markerInfo[0].name + ' to ' + markerInfo[0].friend + '<br>' + '<br>'
-                                + '<i>Address:</i> ' + resultFormattedAddress + '<br>' + '<br>' + '<button id="btn" type="button" class="btn btn-danger btn-sm">Delete</button>' +
+                                '<i>Name:</i> ' + markerInfo[0].name + ' to ' + markerInfo[0].friend + '<br>' + '<br>' +
+                                '<i>Address:</i> ' + resultFormattedAddress + '<br>' + '<br>' + '<button id="btn" type="button" class="btn btn-danger btn-sm">Delete</button>' +
                                 '</div>';
-                        }
-                        else {
+                        } else {
                             contentString = '<div id="content" style="width:200px; font-weight: bold; height:100px;">' +
-                                '<i>Name:</i> ' + markerInfo[0].name + '<br>' + '<br>'
-                                + '<i>Address:</i> ' + resultFormattedAddress +
+                                '<i>Name:</i> ' + markerInfo[0].name + '<br>' + '<br>' +
+                                '<i>Address:</i> ' + resultFormattedAddress +
                                 '</div>';
                         }
                         infowindow.setContent(contentString);
@@ -1240,40 +1393,37 @@ Template.map.onCreated(function () {
                             delBtn.addEventListener('click', function () {
                                 if (markerInfo[0].friend != '-') {
                                     Bert.alert("You can not remove this doctor because he is helping " + markerInfo[0].friend + ".", 'danger', 'fixed-top', 'fa-frown-o');
-                                }
-                                else {
+                                } else {
                                     new Confirmation({
-                                            message: "Are you sure?",
-                                            title: "You are about to remove a doctor",
-                                            cancelText: "Cancel",
-                                            okText: "Remove",
-                                            success: true, // whether the button should be green or red
-                                            focus: "cancel" // which button to autofocus, "cancel" (default) or "ok", or "none"
-                                        }, function (ok) {
-                                            if (ok) {
-                                                var meteorUser = s.chop(markerInfo[0].name, 6);
-                                                if (meteorUser[0] !== 'doctor') {
-                                                    History.insert({
-                                                        history: "[" + new Date().toDateString() + "," + new Date().toLocaleTimeString() + "]" +
+                                        message: "Are you sure?",
+                                        title: "You are about to remove a doctor",
+                                        cancelText: "Cancel",
+                                        okText: "Remove",
+                                        success: true, // whether the button should be green or red
+                                        focus: "cancel" // which button to autofocus, "cancel" (default) or "ok", or "none"
+                                    }, function (ok) {
+                                        if (ok) {
+                                            var meteorUser = s.chop(markerInfo[0].name, 6);
+                                            if (meteorUser[0] !== 'doctor') {
+                                                History.insert({
+                                                    history: "[" + new Date().toDateString() + "," + new Date().toLocaleTimeString() + "]" +
                                                         " Admin removed: " + markerInfo[0].name + "."
-                                                    });
-                                                    Markers.remove(markerInfo[0]._id);
-                                                    if (incrNum != 0) {
-                                                        incrNum--;
+                                                });
+                                                Markers.remove(markerInfo[0]._id);
+                                                if (incrNum != 0) {
+                                                    incrNum--;
+                                                }
+                                            } else {
+                                                Markers.update({
+                                                    _id: markerInfo[0]._id
+                                                }, {
+                                                    $set: {
+                                                        sent: "0"
                                                     }
-                                                }
-                                                else {
-                                                    Markers.update(
-                                                        {_id: markerInfo[0]._id},
-                                                        {
-                                                            $set:
-                                                                {sent: "0"}
-                                                        }
-                                                    );
-                                                }
+                                                });
                                             }
                                         }
-                                    );
+                                    });
                                 }
                             });
                         }
@@ -1283,8 +1433,13 @@ Template.map.onCreated(function () {
                 if (Meteor.user().roles == 'admin') {
                     google.maps.event.addListener(marker, 'dragend', function (event) {
                         var resultFormattedAddress;
-                        var latlng = {lat: event.latLng.lat(), lng: event.latLng.lng()};
-                        geocoder.geocode({'location': latlng}, function (results, status) {
+                        var latlng = {
+                            lat: event.latLng.lat(),
+                            lng: event.latLng.lng()
+                        };
+                        geocoder.geocode({
+                            'location': latlng
+                        }, function (results, status) {
                             if (status === 'OK') {
                                 if (results[0]) {
                                     resultFormattedAddress = results[0].formatted_address;
@@ -1295,8 +1450,7 @@ Template.map.onCreated(function () {
                                 window.alert('Geocoder failed due to: ' + status);
                             }
                             Markers.update(
-                                marker.id,
-                                {
+                                marker.id, {
                                     $set: {
                                         lat: event.latLng.lat(),
                                         lng: event.latLng.lng(),
@@ -1309,7 +1463,10 @@ Template.map.onCreated(function () {
                 }
             },
             changed: function (newDocument, oldDocument) {
-                markers[newDocument._id].setPosition({lat: newDocument.lat, lng: newDocument.lng});
+                markers[newDocument._id].setPosition({
+                    lat: newDocument.lat,
+                    lng: newDocument.lng
+                });
             },
             removed: function (oldDocument) {
                 // Remove the marker from the map
